@@ -6,11 +6,10 @@ function Hero() {
       </h1>
 
       <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-        GuestVoice helps homestay owners analyze customer reviews,
-        discover improvement areas, and enhance guest satisfaction
-        using AI-powered insights.
+         <i>
+            GuestVoice helps homestay owners analyze customer reviews,discover improvement areas, and enhance guest satisfaction using AI-powered insights.</i>
       </p>
-
+      <br />
       <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
         Explore Insights
       </button>
