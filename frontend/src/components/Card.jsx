@@ -1,37 +1,29 @@
-function Card({ title, description, image, action }) {
+function Card({
+  title,
+  description,
+  darkMode,
+}) {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div
+      className={`rounded-xl shadow-lg p-6 ${
+        darkMode
+          ? "bg-gray-700 text-white"
+          : "bg-white text-black"
+      }`}
+    >
+      <h2 className="text-2xl font-semibold mb-4">
+        {title}
+      </h2>
 
-      <img
-        src={image}
-        alt={title}
-        className="h-48 w-full object-cover"
-      />
-
-      <div className="p-6">
-
-        <h2 className="text-2xl font-semibold mb-4">
-
-          {title}
-
-        </h2>
-
-        <p className="text-gray-600 mb-4">
-
-          {description}
-
-        </p>
-
-        {action && (
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
-
-            {action}
-
-          </button>
-        )}
-
-      </div>
-
+      <p
+        className={
+          darkMode
+            ? "text-gray-300"
+            : "text-gray-600"
+        }
+      >
+        {description}
+      </p>
     </div>
   );
 }
