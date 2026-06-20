@@ -7,15 +7,26 @@ function Input({
   error,
 }) {
   return (
-    <div className="mb-4">
-      <label className="block mb-2">{label}</label>
+    <div className="mb-5">
+
+      <label className="block mb-2 font-medium">
+        {label}
+      </label>
 
       <input
         type={type}
-        placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border p-2 w-full rounded"
+        placeholder={placeholder}
+        className="
+          border
+          rounded-lg
+          p-3
+          w-full
+          focus:outline-none
+          focus:ring-2
+          focus:ring-blue-500
+        "
       />
 
       {error && (
