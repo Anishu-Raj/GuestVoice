@@ -1,57 +1,64 @@
-import { useState } from "react";
-
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import Card from "../components/Card";
 import Footer from "../components/Footer";
+import ReviewList from "../components/ReviewList";
 
-function Home() {
-  const [darkMode, setDarkMode] = useState(false);
+import useReviews from "../hooks/useReviews";
 
-  return (
-    <div
-      className={
-        darkMode
-          ? "min-h-screen bg-gray-900 text-white"
-          : "min-h-screen bg-white text-black"
-      }
-    >
-      <Navbar darkMode={darkMode} />
+function Home(){
 
-      <div className="flex justify-start px-6 pt-4">
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
-        </button>
-      </div>
+const{
 
-      <Hero darkMode={darkMode} />
+reviews,
 
-      <section className="max-w-6xl mx-auto py-16 px-6">
-        <h2 className="text-3xl font-bold text-center mb-10">
-          Key Features
-        </h2>
+loading,
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <Card
-            darkMode={darkMode}
-            title="Sentiment Analysis"
-            description="Identify whether reviews express positive, negative, or neutral sentiments."
-          />
+error
 
-          <Card
-            darkMode={darkMode}
-            title="Aspect-Based Insights"
-            description="Discover guest opinions about cleanliness, hospitality, food, and location."
-          />
-        </div>
-      </section>
+}=useReviews();
 
-      <Footer darkMode={darkMode} />
-    </div>
-  );
+if(loading){
+
+return <h2>Loading...</h2>;
+
+}
+
+if(error){
+
+return <h2>{error}</h2>;
+
+}
+
+return(
+
+<>
+
+<Navbar/>
+
+<Hero/>
+
+<section className="max-w-6xl mx-auto py-12">
+
+<h2 className="text-3xl font-bold mb-8">
+
+Latest Guest Reviews
+
+</h2>
+
+<ReviewList
+
+reviews={reviews}
+
+/>
+
+</section>
+
+<Footer/>
+
+</>
+
+);
+
 }
 
 export default Home;
