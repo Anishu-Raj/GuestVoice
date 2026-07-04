@@ -8,6 +8,7 @@ import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 import SearchSection from "../components/SearchSection";
+import PopularHomestays from "../components/PopularHomestays";
 
 function Home() {
   return (
@@ -15,13 +16,14 @@ function Home() {
       <Navbar />
       <Hero />
       <SearchSection />
-      <TrustedBrands />
+      <PopularHomestays/>
+      {/*<TrustedBrands />*
       <Features />
       <HowItWorks />
       <DashboardPreview />
       <Testimonials />
-      <CTA />
-      /*<Footer />
+      <CTA />*/}
+      <Footer />
     </div>
   );
 }
