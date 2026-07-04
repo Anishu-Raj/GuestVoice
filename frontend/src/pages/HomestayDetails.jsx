@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import toast from "react-hot-toast";
 function HomestayDetails() {
 
   const { id } = useParams();
 
   const [homestay, setHomestay] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [formData, setFormData] = useState({
+  guestName: "",
+  rating: 5,
+  review: "",
+});
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
@@ -46,6 +51,31 @@ function HomestayDetails() {
 
     }
   };
+  const submitReview = async (e) => {
+  e.preventDefault();
+
+  try {
+    await axios.post("http://localhost:5000/api/reviews", {
+      ...formData,
+      homestay: id,
+      sentiment: "Positive",
+    });
+
+    toast.success("Review Added Successfully 🎉");
+
+    setFormData({
+      guestName: "",
+      rating: 5,
+      review: "",
+    });
+
+    fetchReviews();
+
+  } catch (err) {
+    console.log(err);
+    toast.error("Failed to add review");
+  }
+};
      const positiveReviews = reviews.filter(
   (review) => review.sentiment === "Positive"
 );
@@ -279,6 +309,78 @@ const averageRating =
     </button>
 
   ))}
+
+</div>
+<div className="mt-14 bg-white rounded-3xl shadow-xl p-10">
+
+  <h2 className="text-3xl font-bold text-pink-600">
+
+    Add Your Review
+
+  </h2>
+
+  <form
+    onSubmit={submitReview}
+    className="space-y-6 mt-8"
+  >
+
+    <input
+      type="text"
+      placeholder="Guest Name"
+      required
+      value={formData.guestName}
+      onChange={(e) =>
+        setFormData({
+          ...formData,
+          guestName: e.target.value,
+        })
+      }
+      className="w-full border rounded-xl p-4"
+    />
+
+    <select
+      value={formData.rating}
+      onChange={(e) =>
+        setFormData({
+          ...formData,
+          rating: Number(e.target.value),
+        })
+      }
+      className="w-full border rounded-xl p-4"
+    >
+
+      <option value={5}>⭐⭐⭐⭐⭐</option>
+      <option value={4}>⭐⭐⭐⭐</option>
+      <option value={3}>⭐⭐⭐</option>
+      <option value={2}>⭐⭐</option>
+      <option value={1}>⭐</option>
+
+    </select>
+
+    <textarea
+      rows="5"
+      placeholder="Write your review..."
+      required
+      value={formData.review}
+      onChange={(e) =>
+        setFormData({
+          ...formData,
+          review: e.target.value,
+        })
+      }
+      className="w-full border rounded-xl p-4"
+    />
+
+    <button
+      type="submit"
+      className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:scale-105 transition"
+    >
+
+      Submit Review
+
+    </button>
+
+  </form>
 
 </div>
         {/* AI */}
