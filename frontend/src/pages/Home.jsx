@@ -1,64 +1,29 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
+import TrustedBrands from "../components/TrustedBrands";
+import Features from "../components/Features";
+import HowItWorks from "../components/HowItWorks";
+import DashboardPreview from "../components/DashboardPreview";
+import Testimonials from "../components/Testimonials";
+import CTA from "../components/CTA";
 import Footer from "../components/Footer";
-import ReviewList from "../components/ReviewList";
+import SearchSection from "../components/SearchSection";
 
-import useReviews from "../hooks/useReviews";
-
-function Home(){
-
-const{
-
-reviews,
-
-loading,
-
-error
-
-}=useReviews();
-
-if(loading){
-
-return <h2>Loading...</h2>;
-
-}
-
-if(error){
-
-return <h2>{error}</h2>;
-
-}
-
-return(
-
-<>
-
-<Navbar/>
-
-<Hero/>
-
-<section className="max-w-6xl mx-auto py-12">
-
-<h2 className="text-3xl font-bold mb-8">
-
-Latest Guest Reviews
-
-</h2>
-
-<ReviewList
-
-reviews={reviews}
-
-/>
-
-</section>
-
-<Footer/>
-
-</>
-
-);
-
+function Home() {
+  return (
+    <div className="bg-slate-950 min-h-screen">
+      <Navbar />
+      <Hero />
+      <SearchSection />
+      <TrustedBrands />
+      <Features />
+      <HowItWorks />
+      <DashboardPreview />
+      <Testimonials />
+      <CTA />
+      /*<Footer />
+    </div>
+  );
 }
 
 export default Home;

@@ -1,36 +1,87 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
-function Navbar({ darkMode }) {
+function Navbar() {
   return (
-    <nav
-      className={`flex flex-col md:flex-row justify-between items-center px-8 py-4 ${
-        darkMode
-          ? "bg-black text-white"
-          : "bg-gray-900 text-white"
-      }`}
+    <motion.nav
+      initial={{ y: -60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-white/10"
     >
-      <h1 className="text-2xl font-bold text-blue-400">
-        GuestVoice
-      </h1>
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-      <div className="flex flex-col md:flex-row gap-3 md:gap-6 mt-4 md:mt-0">
-        <Link to="/" className="hover:text-blue-400">
-          Home
-        </Link>
+        {/* Logo */}
 
-        <Link to="/about" className="hover:text-blue-400">
-          About
-        </Link>
+        <div className="flex items-center gap-3">
 
-        <Link to="/dashboard" className="hover:text-blue-400">
-          Dashboard
-        </Link>
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-sky-500 to-blue-700 flex items-center justify-center text-white font-bold text-lg shadow-lg">
 
-        <Link to="/login" className="hover:text-blue-400">
-          Login
-        </Link>
+            G
+
+          </div>
+
+          <div>
+
+            <h1 className="text-2xl font-bold text-white">
+
+              GuestVoice
+
+            </h1>
+
+            <p className="text-xs text-gray-400">
+
+              Because Every Review Matters
+
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* Menu */}
+
+        <div className="hidden lg:flex gap-8 text-gray-300 font-medium">
+
+          <Link to="/" className="hover:text-sky-400 transition">
+
+            Home
+
+          </Link>
+
+          <Link to="/dashboard" className="hover:text-sky-400 transition">
+
+            Dashboard
+
+          </Link>
+
+          <Link to="/about" className="hover:text-sky-400 transition">
+
+            About
+
+          </Link>
+
+          <Link to="/login" className="hover:text-sky-400 transition">
+
+            Login
+
+          </Link>
+
+        </div>
+
+        {/* Button */}
+
+        <button className="hidden md:flex items-center gap-2 bg-sky-500 hover:bg-sky-600 transition px-6 py-3 rounded-xl text-white font-semibold shadow-xl">
+
+          Explore Platform
+
+          <ArrowRight size={18} />
+
+        </button>
+
       </div>
-    </nav>
+    </motion.nav>
   );
 }
 
