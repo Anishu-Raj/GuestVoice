@@ -8,6 +8,7 @@ function HomestayDetails() {
 
   const [homestay, setHomestay] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     fetchHomestay();
@@ -45,7 +46,30 @@ function HomestayDetails() {
 
     }
   };
+     const positiveReviews = reviews.filter(
+  (review) => review.sentiment === "Positive"
+);
 
+const neutralReviews = reviews.filter(
+  (review) => review.sentiment === "Neutral"
+);
+
+const negativeReviews = reviews.filter(
+  (review) => review.sentiment === "Negative"
+);
+
+const filteredReviews =
+  filter === "All"
+    ? reviews
+    : reviews.filter((review) => review.sentiment === filter);
+
+const averageRating =
+  reviews.length > 0
+    ? (
+        reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      ).toFixed(1)
+    : 0;
   if (!homestay) {
 
     return (
@@ -121,7 +145,49 @@ function HomestayDetails() {
           </p>
 
         </div>
+         <div className="grid md:grid-cols-5 gap-5 mt-10">
 
+  <div className="bg-green-100 rounded-2xl p-6 text-center">
+    <h2 className="text-3xl">😊</h2>
+    <p className="font-bold mt-2">
+      {positiveReviews.length}
+    </p>
+    <p>Positive</p>
+  </div>
+
+  <div className="bg-yellow-100 rounded-2xl p-6 text-center">
+    <h2 className="text-3xl">😐</h2>
+    <p className="font-bold mt-2">
+      {neutralReviews.length}
+    </p>
+    <p>Neutral</p>
+  </div>
+
+  <div className="bg-red-100 rounded-2xl p-6 text-center">
+    <h2 className="text-3xl">😞</h2>
+    <p className="font-bold mt-2">
+      {negativeReviews.length}
+    </p>
+    <p>Negative</p>
+  </div>
+
+  <div className="bg-pink-100 rounded-2xl p-6 text-center">
+    <h2 className="text-3xl">⭐</h2>
+    <p className="font-bold mt-2">
+      {averageRating}
+    </p>
+    <p>Average</p>
+  </div>
+
+  <div className="bg-purple-100 rounded-2xl p-6 text-center">
+    <h2 className="text-3xl">💬</h2>
+    <p className="font-bold mt-2">
+      {reviews.length}
+    </p>
+    <p>Total Reviews</p>
+  </div>
+
+</div>
         {/* Reviews */}
 
         <div className="mt-12">
@@ -148,7 +214,7 @@ function HomestayDetails() {
 
             ) : (
 
-              reviews.map((review) => (
+              filteredReviews.map((review) => (
 
                 <div
                   key={review._id}
@@ -196,7 +262,25 @@ function HomestayDetails() {
           </div>
 
         </div>
+          <div className="flex gap-4 my-8 flex-wrap">
 
+  {["All", "Positive", "Neutral", "Negative"].map((item) => (
+
+    <button
+      key={item}
+      onClick={() => setFilter(item)}
+      className={`px-5 py-2 rounded-full transition font-medium ${
+        filter === item
+          ? "bg-pink-500 text-white"
+          : "bg-white border"
+      }`}
+    >
+      {item}
+    </button>
+
+  ))}
+
+</div>
         {/* AI */}
 
         <div className="mt-14 bg-white rounded-3xl shadow-xl p-10 text-center">

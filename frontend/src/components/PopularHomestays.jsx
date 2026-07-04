@@ -2,14 +2,26 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function PopularHomestays() {
+function PopularHomestays({ keyword }) {
   const [homestays, setHomestays] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+
+  if (keyword === "") {
+
     fetchHomestays();
-  }, []);
+
+  }
+
+  else {
+
+    searchHomestays();
+
+  }
+
+}, [keyword]);
 
   const fetchHomestays = async () => {
     try {
@@ -22,7 +34,27 @@ function PopularHomestays() {
       console.log(err);
     }
   };
+const searchHomestays = async () => {
 
+  try {
+
+    const { data } = await axios.get(
+
+      `http://localhost:5000/api/homestays/search?name=${keyword}`
+
+    );
+
+    setHomestays(data);
+
+  }
+
+  catch (err) {
+
+    console.log(err);
+
+  }
+
+};
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">

@@ -1,40 +1,31 @@
+import { useState } from "react";
+
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import TrustedBrands from "../components/TrustedBrands";
-import Features from "../components/Features";
-import HowItWorks from "../components/HowItWorks";
-import DashboardPreview from "../components/DashboardPreview";
-import Testimonials from "../components/Testimonials";
-import CTA from "../components/CTA";
 import Footer from "../components/Footer";
-
 import SearchSection from "../components/SearchSection";
 import PopularHomestays from "../components/PopularHomestays";
 
 function Home() {
+
+  const [keyword, setKeyword] = useState("");
+
   return (
-    <div className="min-h-screen bg-pink-50">
+
+    <div className="bg-white min-h-screen">
 
       <Navbar />
 
       <Hero />
 
-      <SearchSection />
+      <SearchSection onSearch={setKeyword} />
 
-      <PopularHomestays />
-
-      {/*
-      <TrustedBrands />
-      <Features />
-      <HowItWorks />
-      <DashboardPreview />
-      <Testimonials />
-      <CTA />
-      */}
+      <PopularHomestays keyword={keyword} />
 
       <Footer />
 
     </div>
+
   );
 }
 
