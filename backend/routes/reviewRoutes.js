@@ -1,104 +1,46 @@
 import express from "express";
+
+import {
+  getAllReviews,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview,
+  searchReviews,
+  getReviewStats,
+  getReviewsByHomestay,
+} from "../controllers/reviewController.js";
+
 const router = express.Router();
-import reviews from "../data/reviews.js";
 
-router.get("/", (req, res) => {
+/*
+====================================
+Review Routes
+====================================
+*/
 
-    res.json(reviews);
+// Get Review Statistics
+router.get("/stats", getReviewStats);
 
-});
-router.get("/:id", (req, res) => {
+// Search Reviews
+router.get("/search", searchReviews);
 
-    const id = Number(req.params.id);
+// Get Reviews of Particular Homestay
+router.get("/homestay/:id", getReviewsByHomestay);
 
-    const review = reviews.find(r => r.id === id);
+// Get All Reviews
+router.get("/", getAllReviews);
 
-    if (!review) {
+// Get Review by ID
+router.get("/:id", getReviewById);
 
-        return res.status(404).json({
-            message: "Review not found"
-        });
+// Create Review
+router.post("/", createReview);
 
-    }
+// Update Review
+router.put("/:id", updateReview);
 
-    res.json(review);
+// Delete Review
+router.delete("/:id", deleteReview);
 
-});
-router.post("/", (req, res) => {
-
-    const newReview = {
-
-        id: reviews.length + 1,
-
-        ...req.body
-
-    };
-
-    reviews.push(newReview);
-
-    res.status(201).json({
-
-        message: "Review Added Successfully",
-
-        review: newReview
-
-    });
-
-});
-router.put("/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
-    const review = reviews.find((r) => r.id === id);
-
-    if (!review) {
-
-        return res.status(404).json({
-            message: "Review not found",
-        });
-
-    }
-
-    review.guest = req.body.guest;
-    review.hotel = req.body.hotel;
-    review.rating = req.body.rating;
-    review.sentiment = req.body.sentiment;
-    review.review = req.body.review;
-
-    res.json({
-
-        message: "Review Updated Successfully",
-
-        review,
-
-    });
-
-});
-router.delete("/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
-    const index = reviews.findIndex((r) => r.id === id);
-
-    if (index === -1) {
-
-        return res.status(404).json({
-
-            message: "Review not found",
-
-        });
-
-    }
-
-    const deletedReview = reviews.splice(index, 1);
-
-    res.json({
-
-        message: "Review Deleted Successfully",
-
-        review: deletedReview[0],
-
-    });
-
-});
 export default router;
