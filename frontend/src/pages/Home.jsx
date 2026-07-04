@@ -7,23 +7,33 @@ import DashboardPreview from "../components/DashboardPreview";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
+
 import SearchSection from "../components/SearchSection";
 import PopularHomestays from "../components/PopularHomestays";
 
 function Home() {
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="min-h-screen bg-pink-50">
+
       <Navbar />
+
       <Hero />
+
       <SearchSection />
-      <PopularHomestays/>
-      {/*<TrustedBrands />*
+
+      <PopularHomestays />
+
+      {/*
+      <TrustedBrands />
       <Features />
       <HowItWorks />
       <DashboardPreview />
       <Testimonials />
-      <CTA />*/}
+      <CTA />
+      */}
+
       <Footer />
+
     </div>
   );
 }

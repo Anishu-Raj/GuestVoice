@@ -5,7 +5,7 @@ import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ComponentsDemo from "./pages/ComponentsDemo";
-
+import HomestayDetails from "./pages/HomestayDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +19,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/login" element={<Login />} />
-        <Route path="/components" element={<ComponentsDemo />}
+        <Route path="/components" element={<ComponentsDemo />} />
+        <Route path="/homestay/:id" element={<HomestayDetails/>}
 />
 
       </Routes>
