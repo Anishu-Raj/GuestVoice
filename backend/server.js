@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+import homestayRoutes from "./routes/homestayRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 
 dotenv.config();
@@ -28,3 +28,4 @@ mongoose
   });
 
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/homestays", homestayRoutes);
