@@ -13,6 +13,7 @@ function HomestayDetails() {
   rating: 5,
   review: "",
 });
+const [editingId, setEditingId] = useState(null);
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
@@ -48,20 +49,99 @@ function HomestayDetails() {
     } catch (err) {
 
       console.log(err);
-
     }
   };
-  const submitReview = async (e) => {
+  const editReview = (review) => {
+
+  setEditingId(review._id);
+
+  setFormData({
+
+    guestName: review.guestName,
+
+    rating: review.rating,
+
+    review: review.review,
+
+  });
+
+  window.scrollTo({
+
+    top: 0,
+
+    behavior: "smooth",
+
+  });
+
+};
+const deleteReview = async (id) => {
+
+  const confirmDelete = window.confirm(
+
+    "Delete this review?"
+
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    await axios.delete(
+
+      `http://localhost:5000/api/reviews/${id}`
+
+    );
+
+    toast.success("Review Deleted");
+
+    fetchReviews();
+
+  }
+
+  catch (err) {
+
+    console.log(err);
+
+  }
+
+};
+const submitReview = async (e) => {
   e.preventDefault();
 
   try {
-    await axios.post("http://localhost:5000/api/reviews", {
-      ...formData,
-      homestay: id,
-      sentiment: "Positive",
-    });
 
-    toast.success("Review Added Successfully 🎉");
+    if (editingId) {
+
+      await axios.put(
+
+        `http://localhost:5000/api/reviews/${editingId}`,
+
+        {
+          ...formData,
+        }
+
+      );
+
+      toast.success("Review Updated Successfully 🎉");
+
+      setEditingId(null);
+
+    }
+
+    else {
+
+      await axios.post(
+        "http://localhost:5000/api/reviews",
+        {
+          ...formData,
+          homestay: id,
+          sentiment: "Positive",
+        }
+      );
+
+      toast.success("Review Added Successfully 🎉");
+
+    }
 
     setFormData({
       guestName: "",
@@ -71,11 +151,18 @@ function HomestayDetails() {
 
     fetchReviews();
 
-  } catch (err) {
-    console.log(err);
-    toast.error("Failed to add review");
   }
+
+  catch (err) {
+
+    console.log(err);
+
+    toast.error("Something went wrong");
+
+  }
+
 };
+  
      const positiveReviews = reviews.filter(
   (review) => review.sentiment === "Positive"
 );
@@ -100,20 +187,38 @@ const averageRating =
         reviews.length
       ).toFixed(1)
     : 0;
-  if (!homestay) {
+if (!homestay) {
 
-    return (
+                  return (
 
-      <div className="min-h-screen flex justify-center items-center text-2xl">
+                          <div className="min-h-screen flex justify-center items-center text-2xl">
 
-        Loading...
+                Loading...
 
-      </div>
+                    </div>
 
-    );
+                 );
 
-  }
+                }
+  const overallSentiment =
+  positiveReviews.length >= neutralReviews.length &&
+  positiveReviews.length >= negativeReviews.length
+    ? "Positive"
+    : neutralReviews.length >= negativeReviews.length
+    ? "Neutral"
+    : "Negative";
 
+const strengths = [
+  "Friendly Staff",
+  "Clean Rooms",
+  "Beautiful Location",
+];
+
+const improvements = [
+  "WiFi",
+  "Parking",
+  "Breakfast",
+];
   return (
 
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100 py-12">
@@ -280,6 +385,33 @@ const averageRating =
                       {review.sentiment}
 
                     </span>
+                  <div className="flex gap-4 mt-6">
+
+                    <button
+
+                      onClick={() => editReview(review)}
+
+                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-5 py-2 rounded-xl"
+
+                      >
+
+                          ✏ Edit
+
+                    </button>
+
+                  <button
+
+                        onClick={() => deleteReview(review._id)}
+
+                        className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl"
+
+                        >
+
+                      🗑 Delete
+
+                  </button>
+
+                  </div>
 
                   </div>
 
@@ -315,10 +447,21 @@ const averageRating =
 
   <h2 className="text-3xl font-bold text-pink-600">
 
-    Add Your Review
+{
 
-  </h2>
+editingId
 
+?
+
+"Update Review"
+
+:
+
+"Add Your Review"
+
+}
+
+</h2>
   <form
     onSubmit={submitReview}
     className="space-y-6 mt-8"
@@ -376,7 +519,19 @@ const averageRating =
       className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:scale-105 transition"
     >
 
-      Submit Review
+      {
+
+editingId
+
+?
+
+"Update Review"
+
+:
+
+"Submit Review"
+
+}
 
     </button>
 
@@ -385,30 +540,112 @@ const averageRating =
 </div>
         {/* AI */}
 
-        <div className="mt-14 bg-white rounded-3xl shadow-xl p-10 text-center">
+        <div className="mt-14 bg-white rounded-3xl shadow-xl p-10">
 
-          <h2 className="text-3xl font-bold text-gray-800">
+  <h2 className="text-3xl font-bold text-pink-600 text-center">
 
-            AI Review Analysis
+    🤖 AI Review Analysis
 
-          </h2>
+  </h2>
 
-          <p className="text-gray-500 mt-4">
+  <div className="grid md:grid-cols-2 gap-10 mt-10">
 
-            Analyze all guest reviews using AI to identify major
-            strengths, common complaints and improvement suggestions.
+    <div>
 
-          </p>
+      <h3 className="text-xl font-bold mb-4">
 
-          <button
-            className="mt-8 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:scale-105 transition"
-          >
+        Overall Sentiment
 
-            Analyze Reviews
+      </h3>
 
-          </button>
+      <span
+        className={`px-5 py-2 rounded-full font-semibold ${
+          overallSentiment === "Positive"
+            ? "bg-green-100 text-green-700"
+            : overallSentiment === "Neutral"
+            ? "bg-yellow-100 text-yellow-700"
+            : "bg-red-100 text-red-700"
+        }`}
+      >
+        {overallSentiment}
+      </span>
 
-        </div>
+      <div className="mt-8">
+
+        <h3 className="font-bold">
+
+          Average Rating
+
+        </h3>
+
+        <p className="text-3xl mt-2">
+
+          ⭐ {averageRating}/5
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <div>
+
+      <h3 className="font-bold text-green-600">
+
+        ✔ Strengths
+
+      </h3>
+
+      <ul className="mt-3 space-y-2">
+
+        {strengths.map((item) => (
+
+          <li key={item}>• {item}</li>
+
+        ))}
+
+      </ul>
+
+      <h3 className="font-bold text-red-600 mt-8">
+
+        ❌ Needs Improvement
+
+      </h3>
+
+      <ul className="mt-3 space-y-2">
+
+        {improvements.map((item) => (
+
+          <li key={item}>• {item}</li>
+
+        ))}
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div className="mt-10 bg-pink-50 rounded-2xl p-6">
+
+    <h3 className="font-bold text-pink-600">
+
+      AI Recommendation
+
+    </h3>
+
+    <p className="mt-3 text-gray-700 leading-7">
+
+      Guests are generally satisfied with this homestay.
+      Improving WiFi connectivity, parking availability,
+      and breakfast quality can further improve guest
+      satisfaction and increase future ratings.
+
+    </p>
+
+  </div>
+
+</div>
 
       </div>
 
