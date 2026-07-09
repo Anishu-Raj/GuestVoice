@@ -1,33 +1,17 @@
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import express from "express";
 
-const protect = async (req, res, next) => {
-  let token;
+import {
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+    registerUser,
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    loginUser
 
-      req.user = await User.findById(decoded.id).select("-password");
+} from "../controllers/authController.js";
 
-      next();
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid Token",
-      });
-    }
-  }
+const router = express.Router();
 
-  if (!token) {
-    return res.status(401).json({
-      message: "No Token",
-    });
-  }
-};
+router.post("/register", registerUser);
 
-export default protect;
+router.post("/login", loginUser);
+
+export default router;
