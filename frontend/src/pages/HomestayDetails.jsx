@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import ReviewStats from "../components/ReviewStats";
+import ReviewForm from "../components/ReviewForm";
+import ReviewList from "../components/ReviewList";
 function HomestayDetails() {
 
   const { id } = useParams();
@@ -280,49 +283,7 @@ const improvements = [
           </p>
 
         </div>
-         <div className="grid md:grid-cols-5 gap-5 mt-10">
-
-  <div className="bg-green-100 rounded-2xl p-6 text-center">
-    <h2 className="text-3xl">😊</h2>
-    <p className="font-bold mt-2">
-      {positiveReviews.length}
-    </p>
-    <p>Positive</p>
-  </div>
-
-  <div className="bg-yellow-100 rounded-2xl p-6 text-center">
-    <h2 className="text-3xl">😐</h2>
-    <p className="font-bold mt-2">
-      {neutralReviews.length}
-    </p>
-    <p>Neutral</p>
-  </div>
-
-  <div className="bg-red-100 rounded-2xl p-6 text-center">
-    <h2 className="text-3xl">😞</h2>
-    <p className="font-bold mt-2">
-      {negativeReviews.length}
-    </p>
-    <p>Negative</p>
-  </div>
-
-  <div className="bg-pink-100 rounded-2xl p-6 text-center">
-    <h2 className="text-3xl">⭐</h2>
-    <p className="font-bold mt-2">
-      {averageRating}
-    </p>
-    <p>Average</p>
-  </div>
-
-  <div className="bg-purple-100 rounded-2xl p-6 text-center">
-    <h2 className="text-3xl">💬</h2>
-    <p className="font-bold mt-2">
-      {reviews.length}
-    </p>
-    <p>Total Reviews</p>
-  </div>
-
-</div>
+        <ReviewStats reviews={reviews} />
         {/* Reviews */}
 
         <div className="mt-12">
@@ -333,95 +294,11 @@ const improvements = [
 
           </h2>
 
-          <div className="space-y-6">
-
-            {reviews.length === 0 ? (
-
-              <div className="bg-white rounded-2xl p-8 shadow">
-
-                <p className="text-gray-500">
-
-                  No Reviews Found.
-
-                </p>
-
-              </div>
-
-            ) : (
-
-              filteredReviews.map((review) => (
-
-                <div
-                  key={review._id}
-                  className="bg-white rounded-2xl shadow-lg p-8"
-                >
-
-                  <div className="flex justify-between">
-
-                    <h3 className="font-bold text-xl">
-
-                      {review.guestName}
-
-                    </h3>
-
-                    <span className="text-yellow-500">
-
-                      ⭐ {review.rating}
-
-                    </span>
-
-                  </div>
-
-                  <p className="mt-5 text-gray-700 leading-7">
-
-                    {review.review}
-
-                  </p>
-
-                  <div className="mt-5">
-
-                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">
-
-                      {review.sentiment}
-
-                    </span>
-                  <div className="flex gap-4 mt-6">
-
-                    <button
-
-                      onClick={() => editReview(review)}
-
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-5 py-2 rounded-xl"
-
-                      >
-
-                          ✏ Edit
-
-                    </button>
-
-                  <button
-
-                        onClick={() => deleteReview(review._id)}
-
-                        className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl"
-
-                        >
-
-                      🗑 Delete
-
-                  </button>
-
-                  </div>
-
-                  </div>
-
-                </div>
-
-              ))
-
-            )}
-
-          </div>
+          <ReviewList
+  reviews={filteredReviews}
+  editReview={editReview}
+  deleteReview={deleteReview}
+/>
 
         </div>
           <div className="flex gap-4 my-8 flex-wrap">
@@ -540,113 +417,12 @@ editingId
 </div>
         {/* AI */}
 
-        <div className="mt-14 bg-white rounded-3xl shadow-xl p-10">
-
-  <h2 className="text-3xl font-bold text-pink-600 text-center">
-
-    🤖 AI Review Analysis
-
-  </h2>
-
-  <div className="grid md:grid-cols-2 gap-10 mt-10">
-
-    <div>
-
-      <h3 className="text-xl font-bold mb-4">
-
-        Overall Sentiment
-
-      </h3>
-
-      <span
-        className={`px-5 py-2 rounded-full font-semibold ${
-          overallSentiment === "Positive"
-            ? "bg-green-100 text-green-700"
-            : overallSentiment === "Neutral"
-            ? "bg-yellow-100 text-yellow-700"
-            : "bg-red-100 text-red-700"
-        }`}
-      >
-        {overallSentiment}
-      </span>
-
-      <div className="mt-8">
-
-        <h3 className="font-bold">
-
-          Average Rating
-
-        </h3>
-
-        <p className="text-3xl mt-2">
-
-          ⭐ {averageRating}/5
-
-        </p>
-
-      </div>
-
-    </div>
-
-    <div>
-
-      <h3 className="font-bold text-green-600">
-
-        ✔ Strengths
-
-      </h3>
-
-      <ul className="mt-3 space-y-2">
-
-        {strengths.map((item) => (
-
-          <li key={item}>• {item}</li>
-
-        ))}
-
-      </ul>
-
-      <h3 className="font-bold text-red-600 mt-8">
-
-        ❌ Needs Improvement
-
-      </h3>
-
-      <ul className="mt-3 space-y-2">
-
-        {improvements.map((item) => (
-
-          <li key={item}>• {item}</li>
-
-        ))}
-
-      </ul>
-
-    </div>
-
-  </div>
-
-  <div className="mt-10 bg-pink-50 rounded-2xl p-6">
-
-    <h3 className="font-bold text-pink-600">
-
-      AI Recommendation
-
-    </h3>
-
-    <p className="mt-3 text-gray-700 leading-7">
-
-      Guests are generally satisfied with this homestay.
-      Improving WiFi connectivity, parking availability,
-      and breakfast quality can further improve guest
-      satisfaction and increase future ratings.
-
-    </p>
-
-  </div>
-
-</div>
-
+        <ReviewForm
+  formData={formData}
+  setFormData={setFormData}
+  submitReview={submitReview}
+  editingId={editingId}
+/>
       </div>
 
     </div>

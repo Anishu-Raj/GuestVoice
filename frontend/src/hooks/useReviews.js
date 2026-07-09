@@ -2,47 +2,51 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 
 function useReviews() {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    const [reviews, setReviews] = useState([]);
+  // Fetch all reviews
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
 
-    const [loading, setLoading] = useState(true);
+      const response = await API.get("/reviews");
 
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-
-        fetchReviews();
-
-    }, []);
-
-    async function fetchReviews() {
-
-        try {
-
-            const response = await API.get("/reviews");
-
-            setReviews(response.data);
-
-        } catch (err) {
-
-            setError("Unable to load reviews.");
-
-        }
-
-        setLoading(false);
-
+      setReviews(response.data);
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load reviews.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return {
+  // Delete review
+  const deleteReview = async (id) => {
+    try {
+      await API.delete(`/reviews/${id}`);
 
-        reviews,
+      // Refresh reviews
+      fetchReviews();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete review.");
+    }
+  };
 
-        loading,
+  useEffect(() => {
+    fetchReviews();
+  }, []);
 
-        error
-
-    };
-
+  return {
+    reviews,
+    loading,
+    error,
+    fetchReviews,
+    deleteReview,
+  };
 }
 
 export default useReviews;
