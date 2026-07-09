@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ComponentsDemo from "./pages/ComponentsDemo";
 import HomestayDetails from "./pages/HomestayDetails";
+import Register from "./pages/Register";
 function App() {
   return (
     <BrowserRouter>
@@ -20,8 +21,8 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/components" element={<ComponentsDemo />} />
-        <Route path="/homestay/:id" element={<HomestayDetails/>}
-/>
+        <Route path="/homestay/:id" element={<HomestayDetails/>}/>
+        <Route path="/register" element={<Register />} />
 
       </Routes>
 

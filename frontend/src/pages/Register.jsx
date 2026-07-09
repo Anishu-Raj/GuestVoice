@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/AuthContext";
 
-function Login() {
+function Register() {
 
   const navigate = useNavigate();
 
-  const { login } = useAuth();
-
   const [formData, setFormData] = useState({
+
+    name: "",
 
     email: "",
 
@@ -36,25 +35,11 @@ function Login() {
 
     try {
 
-      const { data } = await API.post("/auth/login", formData);
+      await API.post("/auth/register", formData);
 
-      localStorage.setItem("token", data.token);
+      toast.success("Registration Successful");
 
-      login({
-
-        _id: data._id,
-
-        name: data.name,
-
-        email: data.email,
-
-        role: data.role,
-
-      });
-
-      toast.success("Login Successful 🎉");
-
-      navigate("/dashboard");
+      navigate("/login");
 
     }
 
@@ -64,7 +49,7 @@ function Login() {
 
         err.response?.data?.message ||
 
-        "Login Failed"
+        "Registration Failed"
 
       );
 
@@ -80,7 +65,7 @@ function Login() {
 
         <h1 className="text-4xl font-bold text-center text-pink-600">
 
-          Login
+          Register
 
         </h1>
 
@@ -94,9 +79,25 @@ function Login() {
 
           <input
 
-            type="email"
+            name="name"
+
+            placeholder="Full Name"
+
+            value={formData.name}
+
+            onChange={handleChange}
+
+            className="w-full border p-4 rounded-xl"
+
+            required
+
+          />
+
+          <input
 
             name="email"
+
+            type="email"
 
             placeholder="Email"
 
@@ -112,9 +113,9 @@ function Login() {
 
           <input
 
-            type="password"
-
             name="password"
+
+            type="password"
 
             placeholder="Password"
 
@@ -132,29 +133,29 @@ function Login() {
 
             type="submit"
 
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-xl font-semibold"
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-xl"
 
           >
 
-            Login
+            Register
 
           </button>
 
         </form>
 
-        <p className="text-center mt-6">
+        <p className="text-center mt-5">
 
-          Don't have an account?
+          Already have an account?
 
           <Link
 
-            to="/register"
+            to="/login"
 
             className="text-pink-600 ml-2"
 
           >
 
-            Register
+            Login
 
           </Link>
 
@@ -168,4 +169,4 @@ function Login() {
 
 }
 
-export default Login;
+export default Register;
