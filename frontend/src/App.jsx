@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import ComponentsDemo from "./pages/ComponentsDemo";
 import HomestayDetails from "./pages/HomestayDetails";
 import Register from "./pages/Register";
+import CompleteProfile from "./pages/CompleteProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -23,7 +24,7 @@ function App() {
         <Route path="/components" element={<ComponentsDemo />} />
         <Route path="/homestay/:id" element={<HomestayDetails/>}/>
         <Route path="/register" element={<Register />} />
-
+         <Route path="/complete-profile" element={<CompleteProfile />}/>
       </Routes>
 
     </BrowserRouter>

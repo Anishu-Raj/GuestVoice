@@ -1,170 +1,21 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import API from "../services/api";
-import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 function Login() {
 
-  const navigate = useNavigate();
+const { loginWithGoogle } = useAuth();
 
-  const { login } = useAuth();
+return (
 
-  const [formData, setFormData] = useState({
+<button
+onClick={loginWithGoogle}
+className="w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+>
 
-    email: "",
+Continue with Google
 
-    password: ""
+</button>
 
-  });
-
-  const handleChange = (e) => {
-
-    setFormData({
-
-      ...formData,
-
-      [e.target.name]: e.target.value,
-
-    });
-
-  };
-
-  const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    try {
-
-      const { data } = await API.post("/auth/login", formData);
-
-      localStorage.setItem("token", data.token);
-
-      login({
-
-        _id: data._id,
-
-        name: data.name,
-
-        email: data.email,
-
-        role: data.role,
-
-      });
-
-      toast.success("Login Successful 🎉");
-
-      navigate("/dashboard");
-
-    }
-
-    catch (err) {
-
-      toast.error(
-
-        err.response?.data?.message ||
-
-        "Login Failed"
-
-      );
-
-    }
-
-  };
-
-  return (
-
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100">
-
-      <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md">
-
-        <h1 className="text-4xl font-bold text-center text-pink-600">
-
-          Login
-
-        </h1>
-
-        <form
-
-          onSubmit={handleSubmit}
-
-          className="space-y-5 mt-8"
-
-        >
-
-          <input
-
-            type="email"
-
-            name="email"
-
-            placeholder="Email"
-
-            value={formData.email}
-
-            onChange={handleChange}
-
-            className="w-full border p-4 rounded-xl"
-
-            required
-
-          />
-
-          <input
-
-            type="password"
-
-            name="password"
-
-            placeholder="Password"
-
-            value={formData.password}
-
-            onChange={handleChange}
-
-            className="w-full border p-4 rounded-xl"
-
-            required
-
-          />
-
-          <button
-
-            type="submit"
-
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-xl font-semibold"
-
-          >
-
-            Login
-
-          </button>
-
-        </form>
-
-        <p className="text-center mt-6">
-
-          Don't have an account?
-
-          <Link
-
-            to="/register"
-
-            className="text-pink-600 ml-2"
-
-          >
-
-            Register
-
-          </Link>
-
-        </p>
-
-      </div>
-
-    </div>
-
-  );
+);
 
 }
 
