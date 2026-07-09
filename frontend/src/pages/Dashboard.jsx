@@ -1,24 +1,19 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+function Dashboard(){
 
-function Dashboard() {
-  return (
-    <>
-      <Navbar />
+return(
 
-      <main className="max-w-4xl mx-auto py-20 px-6">
-        <h1 className="text-4xl font-bold mb-6">
-          Dashboard
-        </h1>
+<div className="min-h-screen flex justify-center items-center bg-slate-100">
 
-        <p className="text-gray-600">
-          This page will display sentiment trends, review summaries, and business insights generated from guest feedback.
-        </p>
-      </main>
+<h1 className="text-5xl font-bold">
 
-      <Footer />
-    </>
-  );
+🎉 Welcome to your Dashboard
+
+</h1>
+
+</div>
+
+);
+
 }
 
 export default Dashboard;

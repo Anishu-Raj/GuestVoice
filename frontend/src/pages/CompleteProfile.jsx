@@ -1,5 +1,7 @@
 import { useState } from "react";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 function CompleteProfile() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -16,15 +18,48 @@ function CompleteProfile() {
       [e.target.name]: e.target.value,
     });
   };
+const navigate=useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const {user}=useAuth();
+const handleSubmit=async(e)=>{
 
-    console.log(formData);
+e.preventDefault();
 
-    // Backend integration next step
-  };
+try{
 
+await axios.put(
+
+"http://localhost:5000/api/auth/complete-profile",
+
+{
+
+email:user.email,
+
+phone:formData.phone,
+
+role:formData.role,
+
+homestayName:formData.homestayName,
+
+location:formData.location,
+
+description:formData.description
+
+}
+
+);
+
+navigate("/dashboard");
+
+}
+
+catch(err){
+
+console.log(err);
+
+}
+
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-white flex items-center justify-center px-6 py-10">
 
