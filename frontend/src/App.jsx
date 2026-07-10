@@ -8,6 +8,8 @@ import ComponentsDemo from "./pages/ComponentsDemo";
 import HomestayDetails from "./pages/HomestayDetails";
 import Register from "./pages/Register";
 import CompleteProfile from "./pages/CompleteProfile";
+import GuestDashboard from "./pages/GuestDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +27,8 @@ function App() {
         <Route path="/homestay/:id" element={<HomestayDetails/>}/>
         <Route path="/register" element={<Register />} />
          <Route path="/complete-profile" element={<CompleteProfile />}/>
+         <Route path="/guest-dashboard" element={<GuestDashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
 
     </BrowserRouter>

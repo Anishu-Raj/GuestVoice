@@ -11,53 +11,97 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+
+  const [firebaseUser, setFirebaseUser] = useState(null);
+
+  const [dbUser, setDbUser] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
+
+      setFirebaseUser(currentUser);
 
       if (currentUser) {
+
         try {
-          await axios.post("http://localhost:5000/api/auth/google", {
-            name: currentUser.displayName,
-            email: currentUser.email,
-            photo: currentUser.photoURL,
-            uid: currentUser.uid,
-          });
+
+          const response = await axios.post(
+            "http://localhost:5000/api/auth/google",
+            {
+              name: currentUser.displayName,
+              email: currentUser.email,
+              photo: currentUser.photoURL,
+              uid: currentUser.uid,
+            }
+          );
+
+          setDbUser(response.data);
+
         } catch (err) {
+
           console.log(err);
+
         }
+
+      }
+
+      else{
+
+        setDbUser(null);
+
       }
 
       setLoading(false);
+
     });
 
     return unsubscribe;
+
   }, []);
 
-  async function loginWithGoogle() {
-    await signInWithPopup(auth, googleProvider);
-  }
+  const loginWithGoogle = async () => {
 
-  async function logout() {
+    await signInWithPopup(auth, googleProvider);
+
+  };
+
+  const logout = async () => {
+
     await signOut(auth);
-  }
+
+  };
 
   return (
+
     <AuthContext.Provider
+
       value={{
-        user,
+
+        firebaseUser,
+
+        dbUser,
+
         loading,
+
         loginWithGoogle,
+
         logout,
-        isLoggedIn: !!user,
+
+        isLoggedIn: !!firebaseUser,
+
       }}
+
     >
+
       {children}
+
     </AuthContext.Provider>
+
   );
+
 }
 
 export const useAuth = () => useContext(AuthContext);

@@ -1,218 +1,164 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 function CompleteProfile() {
-  const [formData, setFormData] = useState({
-    fullName: "",
+
+  const { dbUser } = useAuth();
+
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+
+    role: "",
+
     phone: "",
-    role: "owner",
+
     homestayName: "",
-    location: "",
-    description: "",
+
+    city: "",
+
+    state: "",
+
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+
+    setForm({
+
+      ...form,
+
       [e.target.name]: e.target.value,
+
     });
+
   };
-const navigate=useNavigate();
 
-const {user}=useAuth();
-const handleSubmit=async(e)=>{
+  const handleSubmit = async (e) => {
 
-e.preventDefault();
+    e.preventDefault();
 
-try{
+    await axios.put(
 
-await axios.put(
+      `http://localhost:5000/api/auth/profile/${dbUser._id}`,
 
-"http://localhost:5000/api/auth/complete-profile",
+      form
 
-{
+    );
 
-email:user.email,
+    navigate("/dashboard");
 
-phone:formData.phone,
+  };
 
-role:formData.role,
-
-homestayName:formData.homestayName,
-
-location:formData.location,
-
-description:formData.description
-
-}
-
-);
-
-navigate("/dashboard");
-
-}
-
-catch(err){
-
-console.log(err);
-
-}
-
-};
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-white flex items-center justify-center px-6 py-10">
 
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-10">
+    <div className="min-h-screen bg-slate-100 flex justify-center items-center">
 
-        <div className="text-center mb-10">
+      <form
 
-          <h1 className="text-4xl font-bold text-slate-800">
-            Welcome to GuestVoice 👋
-          </h1>
+        onSubmit={handleSubmit}
 
-          <p className="text-gray-500 mt-3">
-            Let's set up your workspace before getting started.
-          </p>
+        className="bg-white w-full max-w-xl rounded-2xl shadow-xl p-8"
 
-        </div>
+      >
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
+        <h1 className="text-3xl font-bold mb-6">
+
+          Complete Your Profile
+
+        </h1>
+
+        <select
+
+          name="role"
+
+          value={form.role}
+
+          onChange={handleChange}
+
+          className="w-full border rounded-xl p-3 mb-4"
+
+          required
+
         >
 
-          <div>
+          <option value="">Select Role</option>
 
-            <label className="font-semibold text-gray-700">
-              Full Name
-            </label>
+          <option value="owner">Homestay Owner</option>
 
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-            />
+          <option value="guest">Guest</option>
 
-          </div>
+        </select>
 
-          <div>
+        <input
 
-            <label className="font-semibold text-gray-700">
-              Phone Number
-            </label>
+          name="phone"
 
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="+91 XXXXX XXXXX"
-              className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-            />
+          placeholder="Phone Number"
 
-          </div>
+          className="w-full border rounded-xl p-3 mb-4"
 
-          <div>
+          onChange={handleChange}
 
-            <label className="font-semibold text-gray-700">
-              I am a
-            </label>
+        />
 
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-            >
+        {form.role === "owner" && (
 
-              <option value="owner">
-                Homestay Owner
-              </option>
+          <input
 
-              <option value="guest">
-                Guest
-              </option>
+            name="homestayName"
 
-            </select>
+            placeholder="Homestay Name"
 
-          </div>
+            className="w-full border rounded-xl p-3 mb-4"
 
-          {formData.role === "owner" && (
+            onChange={handleChange}
 
-            <>
+          />
 
-              <div>
+        )}
 
-                <label className="font-semibold text-gray-700">
-                  Homestay Name
-                </label>
+        <input
 
-                <input
-                  type="text"
-                  name="homestayName"
-                  value={formData.homestayName}
-                  onChange={handleChange}
-                  placeholder="Mountain Escape Homestay"
-                  className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-                />
+          name="city"
 
-              </div>
+          placeholder="City"
 
-              <div>
+          className="w-full border rounded-xl p-3 mb-4"
 
-                <label className="font-semibold text-gray-700">
-                  Location
-                </label>
+          onChange={handleChange}
 
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="Mussoorie, Uttarakhand"
-                  className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-                />
+        />
 
-              </div>
+        <input
 
-              <div>
+          name="state"
 
-                <label className="font-semibold text-gray-700">
-                  Short Description
-                </label>
+          placeholder="State"
 
-                <textarea
-                  rows="4"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Tell us about your homestay..."
-                  className="mt-2 w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-sky-500"
-                />
+          className="w-full border rounded-xl p-3 mb-6"
 
-              </div>
+          onChange={handleChange}
 
-            </>
+        />
 
-          )}
+        <button
 
-          <button
-            type="submit"
-            className="w-full bg-sky-500 hover:bg-sky-600 transition text-white font-semibold py-4 rounded-xl"
-          >
-            Continue →
-          </button>
+          className="w-full bg-blue-600 text-white py-3 rounded-xl"
 
-        </form>
+        >
 
-      </div>
+          Save Profile
+
+        </button>
+
+      </form>
 
     </div>
+
   );
+
 }
 
 export default CompleteProfile;
