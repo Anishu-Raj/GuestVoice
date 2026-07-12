@@ -2,31 +2,72 @@ import mongoose from "mongoose";
 
 const homestaySchema = new mongoose.Schema(
   {
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
+      unique: true,
     },
 
-    owner: {
+    propertyType: {
+      type: String,
+      enum: [
+        "Villa",
+        "Cabin",
+        "Eco Stay",
+        "Resort",
+        "Camping",
+        "Farm Stay",
+        "Hotel",
+      ],
+      required: true,
+    },
+
+    country: {
+      type: String,
+      default: "India",
+    },
+
+    state: {
       type: String,
       required: true,
     },
 
-    location: {
+    city: {
       type: String,
       required: true,
-    },
-
-    category: {
-      type: String,
-      enum: ["Budget", "Standard", "Luxury"],
-      default: "Standard",
     },
 
     description: {
       type: String,
+      default: "",
+    },
+
+    rooms: {
+      type: Number,
+      default: 1,
+    },
+
+    maxGuests: {
+      type: Number,
+      default: 2,
+    },
+
+    amenities: [
+      {
+        type: String,
+      },
+    ],
+
+    businessGoal: {
+      type: String,
+      default: "",
     },
 
     averageRating: {
@@ -39,10 +80,13 @@ const homestaySchema = new mongoose.Schema(
       default: 0,
     },
 
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
+  },
+  {
+    timestamps: true,
   }
 );
 

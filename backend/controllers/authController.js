@@ -1,135 +1,161 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 
-// ===============================
-// Register User
-// ===============================
+// ================= REGISTER =================
 
-export const registerUser = async (req, res) => {
+export const register = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-    try {
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
 
-        const { name, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
 
-        if (!name || !email || !password) {
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
 
-            return res.status(400).json({
-                message: "Please fill all fields"
-            });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        }
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      firebaseUID: "LOCAL_USER",
+    });
 
-        const existingUser = await User.findOne({ email });
+    res.status(201).json({
+      success: true,
+      message: "Registration Successful",
+    });
 
-        if (existingUser) {
+  } catch (err) {
 
-            return res.status(400).json({
-                message: "User already exists"
-            });
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
 
-        }
+  }
+};
 
-        const salt = await bcrypt.genSalt(10);
+// ================= LOGIN =================
 
-        const hashedPassword = await bcrypt.hash(password, salt);
+export const login = async (req, res) => {
 
-        const user = await User.create({
+  try {
 
-            name,
+    const { email, password } = req.body;
 
-            email,
+    const user = await User.findOne({ email });
 
-            password: hashedPassword
+    if (!user) {
 
-        });
-
-        res.status(201).json({
-
-            _id: user._id,
-
-            name: user.name,
-
-            email: user.email,
-
-            role: user.role,
-
-            token: generateToken(user._id)
-
-        });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
 
     }
 
-    catch (err) {
+    const match = await bcrypt.compare(password, user.password);
 
-        res.status(500).json({
+    if (!match) {
 
-            message: err.message
-
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Credentials",
+      });
 
     }
+
+    const token = jwt.sign(
+
+      {
+        id: user._id,
+      },
+
+      process.env.JWT_SECRET,
+
+      {
+        expiresIn: "7d",
+      }
+
+    );
+
+    res.json({
+
+      success: true,
+
+      token,
+
+      user,
+
+    });
+
+  }
+
+  catch (err) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: err.message,
+
+    });
+
+  }
 
 };
 
-// ===============================
-// Login User
-// ===============================
+// ================= UPDATE PROFILE =================
 
-export const loginUser = async (req, res) => {
+export const updateProfile = async (req, res) => {
 
-    try {
+  try {
 
-        const { email, password } = req.body;
+    const user = await User.findByIdAndUpdate(
 
-        const user = await User.findOne({ email });
+      req.params.id,
 
-        if (!user) {
+      {
 
-            return res.status(400).json({
+        ...req.body,
 
-                message: "Invalid Email"
+        isProfileCompleted: true,
 
-            });
+      },
 
-        }
+      {
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        new: true,
 
-        if (!isMatch) {
+      }
 
-            return res.status(400).json({
+    );
 
-                message: "Invalid Password"
+    res.json(user);
 
-            });
+  }
 
-        }
+  catch (err) {
 
-        res.json({
+    res.status(500).json({
 
-            _id: user._id,
+      message: err.message,
 
-            name: user.name,
+    });
 
-            email: user.email,
-
-            role: user.role,
-
-            token: generateToken(user._id)
-
-        });
-
-    }
-
-    catch (err) {
-
-        res.status(500).json({
-
-            message: err.message
-
-        });
-
-    }
+  }
 
 };

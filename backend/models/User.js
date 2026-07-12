@@ -12,25 +12,39 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-
     password: {
+    type: String,
+    required: true,
+},
+    phone: {
       type: String,
+      default: "",
+    },
+
+    photo: {
+      type: String,
+      default: "",
+    },
+
+    firebaseUID: {
+      type: String,
+      required: true,
     },
 
     role: {
       type: String,
-      enum: ["owner", "admin"],
-      default: "owner",
+      enum: ["owner", "guest", "admin"],
+      default: "guest",
     },
 
-    googleId: {
-      type: String,
-      default: "",
-    },
-
-    avatar: {
-      type: String,
-      default: "",
+    homestayId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Homestay",
+    default: null
+},
+    isProfileCompleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -1,34 +1,113 @@
 import Homestay from "../models/Homestay.js";
+import User from "../models/User.js";
 
-// Get all homestays
-export const getAllHomestays = async (req, res) => {
+// Create Homestay
+export const createHomestay = async (req, res) => {
   try {
-    const homestays = await Homestay.find().sort({ name: 1 });
 
-    res.json(homestays);
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
+    const {
+      ownerId,
+      name,
+      propertyType,
+      country,
+      state,
+      city,
+      description,
+      rooms,
+      maxGuests,
+      amenities,
+      businessGoal,
+    } = req.body;
+
+    // Check Owner
+
+    const owner = await User.findById(ownerId);
+
+    if (!owner) {
+      return res.status(404).json({
+        success: false,
+        message: "Owner not found",
+      });
+    }
+
+    // Check Existing Homestay
+
+    const existingHomestay = await Homestay.findOne({
+      ownerId,
     });
+
+    if (existingHomestay) {
+      return res.status(400).json({
+        success: false,
+        message: "Owner already has a homestay",
+      });
+    }
+
+    // Create Homestay
+
+    const homestay = await Homestay.create({
+      ownerId,
+      name,
+      propertyType,
+      country,
+      state,
+      city,
+      description,
+      rooms,
+      maxGuests,
+      amenities,
+      businessGoal,
+    });
+
+    // Update User
+
+    owner.homestayId = homestay._id;
+
+    await owner.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Homestay created successfully",
+      homestay,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
   }
 };
 
-// Search homestay
-export const searchHomestay = async (req, res) => {
+// Get Single Homestay
+
+export const getHomestay = async (req, res) => {
+
   try {
-    const keyword = req.query.name;
 
-    const homestays = await Homestay.find({
-      name: {
-        $regex: keyword,
-        $options: "i",
-      },
-    });
+    const homestay = await Homestay.findById(req.params.id)
+      .populate("ownerId", "name email photo");
 
-    res.json(homestays);
-  } catch (err) {
+    if (!homestay) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Homestay not found",
+      });
+
+    }
+
+    res.json(homestay);
+
+  } catch (error) {
+
     res.status(500).json({
-      message: err.message,
+      success: false,
+      message: error.message,
     });
+
   }
+
 };

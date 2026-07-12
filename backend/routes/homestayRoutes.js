@@ -1,14 +1,14 @@
 import express from "express";
-
 import {
-  getAllHomestays,
-  searchHomestay,
+  createHomestay,
+  getHomestay,
 } from "../controllers/homestayController.js";
 
 const router = express.Router();
 
-router.get("/", getAllHomestays);
 
-router.get("/search", searchHomestay);
+router.post("/", createHomestay);
+
+router.get("/:id", getHomestay);
 
 export default router;

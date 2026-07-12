@@ -2,27 +2,29 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    homestay: {
+    homestayId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Homestay",
       required: true,
     },
 
-    guestName: {
-      type: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
     rating: {
       type: Number,
+      required: true,
       min: 1,
       max: 5,
-      required: true,
     },
 
     review: {
       type: String,
       required: true,
+      trim: true,
     },
 
     sentiment: {
@@ -31,10 +33,39 @@ const reviewSchema = new mongoose.Schema(
       default: "Neutral",
     },
 
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    topics: [
+      {
+        type: String,
+      },
+    ],
+
+    summary: {
+      type: String,
+      default: "",
     },
+
+    aiRecommendation: {
+      type: String,
+      default: "",
+    },
+
+    confidence: {
+      type: Number,
+      default: 0,
+    },
+
+    isEdited: {
+      type: Boolean,
+      default: false,
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
   }
 );
 
