@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+
 import {
   Sparkles,
   Home,
@@ -10,6 +11,7 @@ import {
   Phone,
   MapPin,
   Building2,
+  Check,
 } from "lucide-react";
 function CompleteProfile() {
 
@@ -37,7 +39,39 @@ function CompleteProfile() {
     });
 
   };
+const propertyTypes = [
+  {
+    icon: "🏡",
+    title: "Villa",
+  },
+  {
+    icon: "🌲",
+    title: "Cabin",
+  },
+  {
+    icon: "🌿",
+    title: "Eco Stay",
+  },
+  {
+    icon: "🏕",
+    title: "Resort",
+  },
+  {
+    icon: "🚜",
+    title: "Farm Stay",
+  },
+  {
+    icon: "🏨",
+    title: "Hotel",
+  },
+];
 
+const goals = [
+  "Increase Bookings",
+  "Improve Ratings",
+  "Understand Guest Feedback",
+  "Increase Revenue",
+];
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -64,39 +98,60 @@ function CompleteProfile() {
 
   return (
 
-<div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-blue-50 flex items-center justify-center px-6 py-14">
+<div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-fuchsia-50 py-16 px-6">
+
+<div className="max-w-5xl mx-auto">
 
 <motion.div
 
-initial={{opacity:0,y:40}}
+initial={{ opacity: 0, y: 30 }}
 
-animate={{opacity:1,y:0}}
+animate={{ opacity: 1, y: 0 }}
 
-transition={{duration:.6}}
+transition={{ duration: .6 }}
 
-className="w-full max-w-4xl bg-white rounded-[32px] shadow-2xl overflow-hidden border border-pink-100"
-
+className="bg-white rounded-[35px] shadow-2xl overflow-hidden"
 >
 
-<div className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 p-10 text-white">
+<div className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600 p-10">
+
+<div className="flex justify-between items-center">
+
+<div>
 
 <div className="flex items-center gap-3">
 
-<Sparkles size={36}/>
+<Sparkles size={34} />
 
-<h1 className="text-4xl font-bold">
+<h1 className="text-4xl font-bold text-white">
 
-Welcome to GuestVoice
+GuestVoice
 
 </h1>
 
 </div>
 
-<p className="mt-3 text-pink-100 text-lg">
+<p className="text-pink-100 mt-3">
 
-Let's personalize your AI workspace in less than a minute.
+AI Powered Customer Experience Platform
 
 </p>
+
+</div>
+
+<div className="bg-white/20 rounded-full px-5 py-2 text-white">
+
+Step 1 of 4
+
+</div>
+
+</div>
+
+<div className="w-full h-2 rounded-full bg-white/20 mt-8">
+
+<div className="w-1/4 h-2 rounded-full bg-white"></div>
+
+</div>
 
 </div>
 
@@ -105,54 +160,205 @@ onSubmit={handleSubmit}
 className="p-10 space-y-5"
 >
 
-<h2 className="text-3xl font-bold text-slate-800">
+<h2 className="text-3xl font-bold">
 
 Complete Your Profile
 
 </h2>
 
-<p className="text-gray-500">
+<p className="text-gray-500 mt-2">
 
-These details help our AI generate better business insights.
+Let's setup your workspace.
 
 </p>
 
-<div className="grid md:grid-cols-2 gap-5">
+{/* Role Selection */}
 
-<div>
+<div className="mt-10">
 
-<label className="font-semibold text-gray-700">
+<h3 className="text-xl font-bold text-slate-800">
 
-Who are you?
+Choose your account
 
-</label>
+</h3>
 
-<select
-name="role"
-value={formData.role}
-onChange={handleChange}
-className="mt-2 w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
+<div className="grid md:grid-cols-2 gap-6 mt-5">
+
+<div
+
+onClick={()=>
+
+setFormData({
+
+...formData,
+
+role:"owner"
+
+})
+
+}
+
+className={`
+
+cursor-pointer
+
+rounded-3xl
+
+border-2
+
+transition
+
+p-7
+
+relative
+
+${
+
+formData.role==="owner"
+
+?
+
+"border-pink-500 bg-pink-50"
+
+:
+
+"border-gray-200"
+
+}
+
+`}
+
 >
 
-<option value="owner">
+{
 
-🏡 Homestay Owner
+formData.role==="owner" &&
 
-</option>
+<div className="absolute right-5 top-5">
 
-<option value="guest">
-
-🧳 Guest
-
-</option>
-
-</select>
+<Check className="text-pink-500"/>
 
 </div>
 
-<div>
+}
 
-<label className="font-semibold text-gray-700">
+<div className="w-14 h-14 rounded-2xl bg-pink-100 flex justify-center items-center">
+
+<Home className="text-pink-600"/>
+
+</div>
+
+<h2 className="font-bold text-xl mt-5">
+
+Homestay Owner
+
+</h2>
+
+<p className="text-gray-500 mt-3">
+
+Manage reviews
+
+AI Dashboard
+
+Business Insights
+
+</p>
+
+</div>
+
+<div
+
+onClick={()=>
+
+setFormData({
+
+...formData,
+
+role:"guest"
+
+})
+
+}
+
+className={`
+
+cursor-pointer
+
+rounded-3xl
+
+border-2
+
+transition
+
+p-7
+
+relative
+
+${
+
+formData.role==="guest"
+
+?
+
+"border-pink-500 bg-pink-50"
+
+:
+
+"border-gray-200"
+
+}
+
+`}
+
+>
+
+{
+
+formData.role==="guest" &&
+
+<div className="absolute right-5 top-5">
+
+<Check className="text-pink-500"/>
+
+</div>
+
+}
+
+<div className="w-14 h-14 rounded-2xl bg-blue-100 flex justify-center items-center">
+
+<Users className="text-blue-600"/>
+
+</div>
+
+<h2 className="font-bold text-xl mt-5">
+
+Guest
+
+</h2>
+
+<p className="text-gray-500 mt-3">
+
+Explore stays
+
+Write reviews
+
+Travel experience
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div className="grid md:grid-cols-2 gap-6 mt-10">
+
+<div className="mt-8">
+
+<label className="font-semibold flex items-center gap-2">
+
+<Phone size={18}/>
 
 Phone Number
 
@@ -168,9 +374,9 @@ value={formData.phone}
 
 onChange={handleChange}
 
-placeholder="9876543210"
+placeholder="+91 9876543210"
 
-className="mt-2 w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
+className="mt-2 w-full border border-gray-200 rounded-2xl p-4 focus:ring-2 focus:ring-pink-400 outline-none"
 
 />
 
@@ -178,13 +384,36 @@ className="mt-2 w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus
 
 </div>
 
-{
-
-formData.role==="owner" &&
+{formData.role === "owner" && (
 
 <>
+{/* ================= BASIC INFORMATION ================= */}
 
-<div className="grid md:grid-cols-2 gap-5">
+<div className="mt-10">
+
+<h3 className="text-2xl font-bold text-slate-800">
+
+🏡 Tell us about your Homestay
+
+</h3>
+
+<p className="text-gray-500 mt-1">
+
+This information helps GuestVoice personalize AI recommendations.
+
+</p>
+
+</div>
+
+<div className="grid md:grid-cols-2 gap-6 mt-8">
+
+<div>
+
+<label className="font-semibold">
+
+Homestay Name
+
+</label>
 
 <input
 
@@ -196,79 +425,17 @@ value={formData.homestayName}
 
 onChange={handleChange}
 
-placeholder="Homestay Name"
+placeholder="Mountain View Homestay"
 
-className="p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
-
-/>
-
-<input
-
-type="text"
-
-name="city"
-
-value={formData.city}
-
-onChange={handleChange}
-
-placeholder="City"
-
-className="p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
+className="mt-2 w-full rounded-2xl border border-gray-200 p-4 focus:ring-2 focus:ring-pink-400 outline-none"
 
 />
 
 </div>
 
-<input
-
-type="text"
-
-name="state"
-
-value={formData.state}
-
-onChange={handleChange}
-
-placeholder="State"
-
-className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
-
-/>
-<div>
-<label className="font-semibold text-gray-700">
-Property Type
-</label>
-
-<select
-name="propertyType"
-value={formData.propertyType}
-onChange={handleChange}
-className="mt-2 w-full p-4 rounded-2xl border border-gray-200"
->
-
-<option value="">Select Property Type</option>
-
-<option>Villa</option>
-
-<option>Cabin</option>
-
-<option>Eco Stay</option>
-
-<option>Resort</option>
-
-<option>Camping</option>
-
-<option>Farm Stay</option>
-
-<option>Hotel</option>
-
-</select>
-
-</div>
 <div>
 
-<label className="font-semibold text-gray-700">
+<label className="font-semibold">
 
 Number of Rooms
 
@@ -280,13 +447,13 @@ type="number"
 
 name="rooms"
 
-min="1"
-
 value={formData.rooms}
 
 onChange={handleChange}
 
-className="mt-2 w-full p-4 rounded-2xl border border-gray-200"
+min={1}
+
+className="mt-2 w-full rounded-2xl border border-gray-200 p-4 focus:ring-2 focus:ring-pink-400 outline-none"
 
 />
 
@@ -294,42 +461,271 @@ className="mt-2 w-full p-4 rounded-2xl border border-gray-200"
 
 <div>
 
-<label className="font-semibold text-gray-700">
+<label className="font-semibold">
 
-Primary Business Goal
+City
 
 </label>
 
-<select
+<input
 
-name="businessGoal"
+type="text"
 
-value={formData.businessGoal}
+name="city"
+
+value={formData.city}
 
 onChange={handleChange}
 
-className="mt-2 w-full p-4 rounded-2xl border border-gray-200"
+placeholder="Mussoorie"
+
+className="mt-2 w-full rounded-2xl border border-gray-200 p-4 focus:ring-2 focus:ring-pink-400 outline-none"
+
+/>
+
+</div>
+
+<div>
+
+<label className="font-semibold">
+
+State
+
+</label>
+
+<input
+
+type="text"
+
+name="state"
+
+value={formData.state}
+
+onChange={handleChange}
+
+placeholder="Uttarakhand"
+
+className="mt-2 w-full rounded-2xl border border-gray-200 p-4 focus:ring-2 focus:ring-pink-400 outline-none"
+
+/>
+
+</div>
+
+</div>
+
+{/* ================= PROPERTY TYPE ================= */}
+
+<div className="mt-12">
+
+<h3 className="text-2xl font-bold">
+
+Choose Property Type
+
+</h3>
+
+<p className="text-gray-500">
+
+Select the category that best matches your business.
+
+</p>
+
+<div className="grid md:grid-cols-3 gap-5 mt-6">
+
+{propertyTypes.map((item) => (
+
+<motion.div
+
+key={item.title}
+
+whileHover={{ scale: 1.03 }}
+
+whileTap={{ scale: .97 }}
+
+onClick={() =>
+setFormData({
+...formData,
+propertyType: item.title,
+})
+}
+
+className={`
+
+cursor-pointer
+
+rounded-3xl
+
+border-2
+
+p-6
+
+transition
+
+relative
+
+${
+formData.propertyType===item.title
+
+?
+
+"border-pink-500 bg-pink-50 shadow-lg"
+
+:
+
+"border-gray-200"
+
+}
+
+`}
 
 >
 
-<option value="">Choose Goal</option>
+{
 
-<option>Increase Bookings</option>
+formData.propertyType===item.title &&
 
-<option>Improve Ratings</option>
+<div className="absolute right-4 top-4">
 
-<option>Understand Guest Feedback</option>
-
-<option>Increase Revenue</option>
-
-<option>Build Brand Reputation</option>
-
-</select>
+<Check className="text-pink-500"/>
 
 </div>
+
+}
+
+<div className="text-5xl">
+
+{item.icon}
+
+</div>
+
+<h2 className="font-bold text-lg mt-4">
+
+{item.title}
+
+</h2>
+
+</motion.div>
+
+))}
+
+</div>
+
+</div>
+
+{/* ================= BUSINESS GOAL ================= */}
+
+<div className="mt-12">
+
+<h3 className="text-2xl font-bold">
+
+What's your business goal?
+
+</h3>
+
+<p className="text-gray-500">
+
+GuestVoice AI will prioritize recommendations based on this.
+
+</p>
+
+<div className="grid md:grid-cols-2 gap-5 mt-6">
+
+{goals.map((goal) => (
+
+<motion.div
+
+key={goal}
+
+whileHover={{ scale: 1.02 }}
+
+whileTap={{ scale: .98 }}
+
+onClick={()=>
+
+setFormData({
+
+...formData,
+
+businessGoal:goal
+
+})
+
+}
+
+className={`
+
+cursor-pointer
+
+rounded-2xl
+
+border-2
+
+transition
+
+p-6
+
+${
+formData.businessGoal===goal
+
+?
+
+"border-pink-500 bg-pink-50"
+
+:
+
+"border-gray-200"
+
+}
+
+`}
+
+>
+
+{
+
+formData.businessGoal===goal &&
+
+<div className="flex justify-end">
+
+<Check className="text-pink-500"/>
+
+</div>
+
+}
+
+<h2 className="font-semibold">
+
+{goal}
+
+</h2>
+
+</motion.div>
+
+))}
+
+</div>
+
+</div>
+
+
+{/* ================= DESCRIPTION ================= */}
+
+<div className="mt-12">
+
+<h3 className="text-2xl font-bold text-slate-800">
+
+Tell us about your Homestay
+
+</h3>
+
+<p className="text-gray-500 mt-1">
+
+This description helps GuestVoice AI understand your business and generate personalized recommendations.
+
+</p>
+
 <textarea
 
-rows={5}
+rows={6}
 
 name="description"
 
@@ -337,46 +733,101 @@ value={formData.description}
 
 onChange={handleChange}
 
-placeholder="Describe your homestay..."
+placeholder="Example:
 
-className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-pink-400 outline-none"
+Mountain View Homestay is located in Mussoorie and offers peaceful mountain views, homemade food, free Wi-Fi, and a family-friendly environment."
+
+className="mt-5 w-full rounded-3xl border border-gray-200 p-5 resize-none focus:ring-2 focus:ring-pink-400 outline-none"
 
 />
 
+</div>
+
 </>
 
-}
+)}
 
-{
+{formData.role === "guest" && (
 
-formData.role==="guest" &&
+<motion.div
 
-<div className="bg-pink-50 rounded-2xl p-6 text-pink-700">
+initial={{ opacity: 0 }}
 
-Guest accounts can discover homestays, save favourites,
+animate={{ opacity: 1 }}
 
-write reviews and manage trips.
+className="mt-10 rounded-3xl bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 p-8"
+
+>
+
+<h2 className="text-2xl font-bold text-pink-600">
+
+Welcome Guest 🎉
+
+</h2>
+
+<p className="mt-3 text-gray-600 leading-7">
+
+As a Guest, you can:
+
+</p>
+
+<div className="grid md:grid-cols-2 gap-4 mt-6">
+
+<div className="bg-white rounded-2xl p-5 shadow">
+
+⭐ Write reviews after your stay
 
 </div>
 
-}
+<div className="bg-white rounded-2xl p-5 shadow">
+
+❤️ Save favourite homestays
+
+</div>
+
+<div className="bg-white rounded-2xl p-5 shadow">
+
+📷 Upload photos (Coming Soon)
+
+</div>
+
+<div className="bg-white rounded-2xl p-5 shadow">
+
+🧳 Share travel experiences
+
+</div>
+
+</div>
+
+</motion.div>
+
+)}
+<div className="mt-14">
 
 <button
 
 type="submit"
 
-className="w-full py-4 rounded-2xl text-white font-bold text-lg bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 hover:scale-[1.02] transition"
+className="w-full rounded-3xl py-5 text-xl font-bold text-white bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 shadow-xl hover:scale-[1.02] transition-all duration-300"
 
 >
 
-Complete Setup →
+🚀 Complete Setup
 
 </button>
 
+<p className="text-center text-gray-400 text-sm mt-4">
+
+You can always update these details later from your dashboard.
+
+</p>
+
+</div>
 </form>
 
 </motion.div>
 
+</div>
 </div>
 
 );
