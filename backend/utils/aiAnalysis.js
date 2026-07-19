@@ -6,7 +6,7 @@
 // NEVER breaks just because the AI call failed.
 
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
 
 function fallbackAnalysis(reviewText, rating) {
   const text = (reviewText || "").toLowerCase();
@@ -71,8 +71,9 @@ Write only the reply text, nothing else — no quotes, no markdown, no labels.`;
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
+  const errorBody = await response.text();
+  throw new Error(`Gemini API error: ${response.status} — ${errorBody}`);
+}
 
     const data = await response.json();
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
@@ -116,8 +117,9 @@ Respond ONLY with valid JSON, no markdown, in exactly this shape:
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
+  const errorBody = await response.text();
+  throw new Error(`Gemini API error: ${response.status} — ${errorBody}`);
+}
 
     const data = await response.json();
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
