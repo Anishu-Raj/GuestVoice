@@ -8,6 +8,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import homestayRoutes from "./routes/homestayRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 import rateLimit from "express-rate-limit";
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/homestays", homestayRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/ai", aiRoutes);
 // Test Route
 app.get("/", (req, res) => {
   res.send("🚀 GuestVoice Backend Running...");

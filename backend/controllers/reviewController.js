@@ -1,10 +1,14 @@
 import Review from "../models/Review.js";
 import Homestay from "../models/Homestay.js";
 import User from "../models/User.js";
+import { analyzeReview } from "../utils/aiAnalysis.js";
 // Get all reviews
 export const getAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.find().populate("homestay");
+    const reviews = await Review.find()
+      .populate("homestayId")
+      .populate("userId", "name photo")
+      .sort({ createdAt: -1 });
 
     res.json(reviews);
   } catch (error) {
@@ -75,6 +79,10 @@ export const createReview = async (req, res) => {
 
     }
 
+    // AI Analysis (Gemini, with safe fallback if it fails)
+
+    const analysis = await analyzeReview(review, rating);
+
     // Create Review
 
     const newReview = await Review.create({
@@ -82,6 +90,11 @@ export const createReview = async (req, res) => {
       userId,
       rating,
       review,
+      sentiment: analysis.sentiment,
+      topics: analysis.topics,
+      summary: analysis.summary,
+      aiRecommendation: analysis.aiRecommendation,
+      confidence: analysis.confidence,
     });
 
     // Fetch all reviews of this homestay

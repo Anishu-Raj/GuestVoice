@@ -49,6 +49,11 @@ const reviewSchema = new mongoose.Schema(
       default: "",
     },
 
+    ownerReply: {
+      type: String,
+      default: "",
+    },
+
     confidence: {
       type: Number,
       default: 0,

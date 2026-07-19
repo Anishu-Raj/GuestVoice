@@ -111,3 +111,42 @@ export const getHomestay = async (req, res) => {
   }
 
 };
+// Get All Homestays
+
+export const getAllHomestays = async (req, res) => {
+  try {
+    const homestays = await Homestay.find();
+
+    res.json(homestays);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+export const searchHomestays = async (req, res) => {
+
+  try {
+
+    const keyword = req.query.name || "";
+
+    const homestays = await Homestay.find({
+      name: {
+        $regex: keyword,
+        $options: "i",
+      },
+    });
+
+    res.json(homestays);
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+
+};

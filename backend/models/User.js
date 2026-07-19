@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
     type: String,
-    required: true,
+    required: false,
 },
     phone: {
       type: String,
@@ -28,7 +28,9 @@ const userSchema = new mongoose.Schema(
 
     firebaseUID: {
       type: String,
-      required: true,
+      required: false,
+      unique: true,
+      sparse: true,
     },
 
     role: {
