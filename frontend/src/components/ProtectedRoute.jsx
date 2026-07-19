@@ -3,16 +3,21 @@ import { useAuth } from "../context/AuthContext";
 
 function ProtectedRoute({ children }) {
 
-    const { isAuthenticated } = useAuth();
+  const { loading, dbUser } = useAuth();
 
-    if (!isAuthenticated) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xl font-semibold">
+        Loading...
+      </div>
+    );
+  }
 
-        return <Navigate to="/login" replace />;
+  if (!dbUser) {
+    return <Navigate to="/login" replace />;
+  }
 
-    }
-
-    return children;
-
+  return children;
 }
 
 export default ProtectedRoute;

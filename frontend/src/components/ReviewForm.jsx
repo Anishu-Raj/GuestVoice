@@ -5,13 +5,14 @@ function ReviewForm({
   setFormData,
   submitReview,
   editingId,
+  submitting,
 }) {
   return (
     <div className="mt-14 bg-white rounded-3xl shadow-xl p-10">
 
       <h2 className="text-3xl font-bold text-pink-600 mb-8">
 
-        {editingId ? "✏ Update Review" : "💬 Add Your Review"}
+        {editingId ? "Update Review" : "Add Your Review"}
 
       </h2>
 
@@ -19,30 +20,6 @@ function ReviewForm({
         onSubmit={submitReview}
         className="space-y-6"
       >
-
-        {/* Guest Name */}
-
-        <div>
-
-          <label className="block mb-2 font-semibold text-gray-700">
-            Guest Name
-          </label>
-
-          <input
-            type="text"
-            required
-            placeholder="Enter your name"
-            value={formData.guestName}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                guestName: e.target.value,
-              })
-            }
-            className="w-full border border-pink-200 rounded-xl p-4 focus:ring-2 focus:ring-pink-400 outline-none"
-          />
-
-        </div>
 
         {/* Rating */}
 
@@ -103,10 +80,17 @@ function ReviewForm({
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:scale-105 transition"
+            disabled={submitting}
+            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:scale-105 transition disabled:opacity-60 disabled:hover:scale-100 flex items-center gap-3"
           >
 
-            {editingId
+            {submitting && (
+              <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            )}
+
+            {submitting
+              ? "Analyzing with AI..."
+              : editingId
               ? "Update Review"
               : "Submit Review"}
 

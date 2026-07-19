@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
 
-  const { user, logout, isLoggedIn } = useAuth();
+  const { dbUser, logout, isLoggedIn } = useAuth();
 
   return (
 
@@ -13,14 +13,14 @@ function Navbar() {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7 }}
-      className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-white/10"
+      className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-gray-100 shadow-sm"
     >
 
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
         {/* Logo */}
 
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
 
           <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-sky-500 to-blue-700 flex items-center justify-center text-white font-bold text-lg shadow-lg">
 
@@ -30,7 +30,7 @@ function Navbar() {
 
           <div>
 
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-gray-900">
 
               GuestVoice
 
@@ -44,29 +44,33 @@ function Navbar() {
 
           </div>
 
-        </div>
+        </Link>
 
         {/* Navigation */}
 
-        <div className="hidden lg:flex items-center gap-8 text-gray-300 font-medium">
+        <div className="hidden lg:flex items-center gap-8 text-gray-600 font-medium">
 
           <Link
             to="/"
-            className="hover:text-sky-400 transition"
+            className="hover:text-sky-500 transition"
           >
             Home
           </Link>
 
-          <Link
-            to="/dashboard"
-            className="hover:text-sky-400 transition"
-          >
-            Dashboard
-          </Link>
+          {isLoggedIn && (
+
+            <Link
+              to="/redirect"
+              className="hover:text-sky-500 transition"
+            >
+              Dashboard
+            </Link>
+
+          )}
 
           <Link
             to="/about"
-            className="hover:text-sky-400 transition"
+            className="hover:text-sky-500 transition"
           >
             About
           </Link>
@@ -83,10 +87,9 @@ function Navbar() {
 
               <>
 
-                <span className="text-white font-medium">
+                <span className="text-gray-700 font-medium hidden sm:block">
 
-                  Hi, {user.name}
-
+                  Hi, {dbUser?.name || "there"}
                 </span>
 
                 <button
@@ -107,7 +110,7 @@ function Navbar() {
 
               <Link to="/login">
 
-                <button className="bg-sky-500 hover:bg-sky-600 transition px-6 py-3 rounded-xl text-white font-semibold shadow-xl">
+                <button className="bg-sky-500 hover:bg-sky-600 transition px-6 py-3 rounded-xl text-white font-semibold shadow-md">
 
                   Login
 
@@ -118,14 +121,6 @@ function Navbar() {
             )
 
           }
-
-          <button className="hidden md:flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 transition px-6 py-3 rounded-xl text-white font-semibold shadow-xl">
-
-            Explore Platform
-
-            <ArrowRight size={18} />
-
-          </button>
 
         </div>
 

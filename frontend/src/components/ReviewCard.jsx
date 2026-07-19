@@ -6,7 +6,7 @@ function ReviewCard({ review, onEdit, onDelete }) {
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
-            {review.guestName}
+            {review.userId?.name || "Guest"}
           </h2>
 
           <p className="text-yellow-500 text-lg mt-1">
@@ -33,20 +33,41 @@ function ReviewCard({ review, onEdit, onDelete }) {
         {review.review}
       </p>
 
+      {/* AI-detected topics */}
+      {review.topics?.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-4">
+          {review.topics.map((topic) => (
+            <span
+              key={topic}
+              className="text-xs bg-sky-50 text-sky-600 px-3 py-1 rounded-full"
+            >
+              {topic}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* AI recommendation, only shown for flagged negative reviews */}
+      {review.aiRecommendation && (
+        <p className="text-sm text-amber-700 bg-amber-50 rounded-lg px-4 py-3 mt-4">
+          {review.aiRecommendation}
+        </p>
+      )}
+
       {/* Buttons */}
       <div className="flex gap-3 mt-6">
         <button
           onClick={() => onEdit(review)}
           className="bg-yellow-400 hover:bg-yellow-500 text-white px-5 py-2 rounded-lg transition"
         >
-          ✏ Edit
+          Edit
         </button>
 
         <button
           onClick={() => onDelete(review._id)}
           className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition"
         >
-          🗑 Delete
+          Delete
         </button>
       </div>
     </div>
