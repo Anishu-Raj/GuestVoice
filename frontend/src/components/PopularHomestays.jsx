@@ -1,65 +1,76 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../services/api";
+import { Home } from "lucide-react";
 
 function PopularHomestays({ keyword }) {
   const [homestays, setHomestays] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
 
-  if (keyword === "") {
+    if (keyword === "") {
+      fetchHomestays();
+    } else {
+      searchHomestays();
+    }
 
-    fetchHomestays();
-
-  }
-
-  else {
-
-    searchHomestays();
-
-  }
-
-}, [keyword]);
+  }, [keyword]);
 
   const fetchHomestays = async () => {
+
+    setLoading(true);
+    setError("");
+
     try {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/homestays"
-      );
 
+      const { data } = await API.get("/homestays");
       setHomestays(data);
+
     } catch (err) {
+
       console.log(err);
+      setError("Couldn't load homestays right now.");
+
+    } finally {
+
+      setLoading(false);
+
     }
+
   };
-const searchHomestays = async () => {
 
-  try {
+  const searchHomestays = async () => {
 
-    const { data } = await axios.get(
+    setLoading(true);
+    setError("");
 
-      `http://localhost:5000/api/homestays/search?name=${keyword}`
+    try {
 
-    );
+      const { data } = await API.get(`/homestays/search?name=${keyword}`);
+      setHomestays(data);
 
-    setHomestays(data);
+    } catch (err) {
 
-  }
+      console.log(err);
+      setError("Search failed. Try again.");
 
-  catch (err) {
+    } finally {
 
-    console.log(err);
+      setLoading(false);
 
-  }
+    }
 
-};
+  };
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
 
-        <h2 className="text-5xl font-bold text-center text-slate-800">
+        <h2 className="text-3xl sm:text-5xl font-bold text-center text-slate-800">
           Popular Homestays
         </h2>
 
@@ -67,7 +78,30 @@ const searchHomestays = async () => {
           Select your homestay to view guest reviews and AI insights.
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+        {loading ? (
+
+          <div className="flex justify-center py-20">
+            <span className="w-8 h-8 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin" />
+          </div>
+
+        ) : error ? (
+
+          <p className="text-center text-red-500 mt-16">{error}</p>
+
+        ) : homestays.length === 0 ? (
+
+          <div className="flex flex-col items-center py-20 text-center">
+            <Home className="text-gray-300" size={48} />
+            <p className="text-gray-400 mt-4">
+              {keyword
+                ? `No homestays found for "${keyword}".`
+                : "No homestays listed yet."}
+            </p>
+          </div>
+
+        ) : (
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-16">
 
           {homestays.map((item) => (
 
@@ -89,20 +123,22 @@ const searchHomestays = async () => {
               </div>
 
               <p className="mt-4 text-gray-600">
-                📍 {item.location}
+                📍 {item.city}{item.state ? `, ${item.state}` : ""}
               </p>
 
               <p className="mt-2">
-                ⭐ {item.averageRating}
+                ⭐ {item.averageRating ? item.averageRating.toFixed(1) : "New"}
               </p>
 
               <p className="mt-2">
-                💬 {item.totalReviews} Reviews
+                💬 {item.totalReviews || 0} Reviews
               </p>
 
-              <p className="mt-2">
-                🏷 {item.category}
-              </p>
+              {item.propertyType && (
+                <p className="mt-2">
+                  🏷 {item.propertyType}
+                </p>
+              )}
 
               <button
                 onClick={() => navigate(`/homestay/${item._id}`)}
@@ -116,6 +152,8 @@ const searchHomestays = async () => {
           ))}
 
         </div>
+
+        )}
 
       </div>
     </section>
