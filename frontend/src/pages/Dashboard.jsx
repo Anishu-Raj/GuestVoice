@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
 import DashboardSidebar from "../components/dashboard/DashboardSidebar";
@@ -21,6 +21,8 @@ function Dashboard() {
   const { dbUser, loading } = useAuth();
 
   const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [dashboardError, setDashboardError] = useState("");
 
   useEffect(() => {
 
@@ -32,17 +34,27 @@ function Dashboard() {
 
   const fetchDashboard = async () => {
 
+    setDashboardLoading(true);
+    setDashboardError("");
+
     try {
 
-      const { data } = await axios.get(
-        `http://localhost:5000/api/dashboard/owner/${dbUser._id}`
-      );
+      const { data } = await API.get(`/dashboard/owner/${dbUser._id}`);
 
       setDashboardData(data);
 
     } catch (err) {
 
       console.log(err);
+
+      setDashboardError(
+        err.response?.data?.message ||
+          "Couldn't load your dashboard right now. Please try again."
+      );
+
+    } finally {
+
+      setDashboardLoading(false);
 
     }
 
@@ -52,7 +64,7 @@ function Dashboard() {
 
     return (
       <div className="min-h-screen flex justify-center items-center">
-        Loading...
+        <span className="w-8 h-8 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin" />
       </div>
     );
 
@@ -70,35 +82,67 @@ function Dashboard() {
 
           <DashboardNavbar />
 
-          <WelcomeCard data={dashboardData} />
+          {dashboardLoading ? (
 
-          <StatsCards data={dashboardData} />
+            <div className="flex flex-col items-center justify-center py-24 gap-4">
+              <span className="w-10 h-10 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin" />
+              <p className="text-gray-400">Loading your dashboard...</p>
+            </div>
 
-          <QuickActions />
+          ) : dashboardError ? (
 
-          <div className="grid lg:grid-cols-2 gap-8 mt-8">
+            <div className="flex flex-col items-center justify-center py-24 gap-4">
+              <p className="text-red-500">{dashboardError}</p>
+              <button
+                onClick={fetchDashboard}
+                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl transition"
+              >
+                Retry
+              </button>
+            </div>
 
-            <SentimentAnalytics breakdown={dashboardData?.sentimentBreakdown} />
+          ) : (
 
-            <RatingSummary />
+            <>
 
-          </div>
+              <WelcomeCard data={dashboardData} />
 
-          <ReviewTrendChart />
+              <StatsCards data={dashboardData} />
 
-          <AIInsights />
+              <QuickActions homestayId={dashboardData?.homestay?._id} />
 
-          <div className="grid lg:grid-cols-2 gap-8 mt-8">
+              <div id="analytics-section" className="grid lg:grid-cols-2 gap-8 mt-8 scroll-mt-8">
 
-            <AISummaryCard />
+                <SentimentAnalytics breakdown={dashboardData?.sentimentBreakdown} />
 
-            <NegativeAlerts alerts={dashboardData?.negativeAlerts} />
+                <RatingSummary distribution={dashboardData?.ratingDistribution} />
 
-          </div>
+              </div>
 
-          <RecentReviews reviews={dashboardData?.recentReviews} />
+              <ReviewTrendChart trend={dashboardData?.monthlyTrend} />
 
-          <TopKeywords keywords={dashboardData?.topKeywords} />
+              <AIInsights insights={dashboardData?.aiInsights} />
+
+              <div id="ai-summary-section" className="grid lg:grid-cols-2 gap-8 mt-8 scroll-mt-8">
+
+                <AISummaryCard
+                  hasData={!!dashboardData}
+                  loved={dashboardData?.guestsLoved}
+                  mentioned={dashboardData?.guestsMentioned}
+                  recommendation={dashboardData?.topRecommendation}
+                />
+
+                <NegativeAlerts alerts={dashboardData?.negativeAlerts} />
+
+              </div>
+
+              <RecentReviews reviews={dashboardData?.recentReviews} />
+
+              <TopKeywords keywords={dashboardData?.topKeywords} />
+
+            </>
+
+          )}
 
         </div>
 

@@ -5,9 +5,16 @@ import {
   Lightbulb,
 } from "lucide-react";
 
-function AIInsights() {
+function AIInsights({ insights: insightsProp }) {
 
-  const insights = [
+  const iconFor = { positive: TrendingUp, warning: AlertTriangle, recommendation: Lightbulb };
+  const styleFor = {
+    positive: { color: "text-green-600", bg: "bg-green-50" },
+    warning: { color: "text-red-600", bg: "bg-red-50" },
+    recommendation: { color: "text-yellow-600", bg: "bg-yellow-50" },
+  };
+
+  const demoInsights = [
     {
       icon: TrendingUp,
       title: "Positive Trend",
@@ -35,6 +42,18 @@ function AIInsights() {
         "Improve internet speed and expand breakfast options to increase guest satisfaction.",
     },
   ];
+
+  const insights =
+    insightsProp && insightsProp.length > 0
+      ? insightsProp.map((item) => ({
+          icon: iconFor[item.type] || Lightbulb,
+          title: item.title,
+          description: item.description,
+          ...styleFor[item.type],
+        }))
+      : insightsProp
+      ? [] // real data loaded, but genuinely zero reviews yet
+      : demoInsights;
 
   return (
 
@@ -65,6 +84,14 @@ function AIInsights() {
         </div>
 
       </div>
+
+      {insights.length === 0 ? (
+
+        <p className="text-gray-400 text-center py-10">
+          No insights yet — they'll show up once guests start leaving reviews.
+        </p>
+
+      ) : (
 
       <div className="space-y-5 mt-8">
 
@@ -104,6 +131,8 @@ function AIInsights() {
         })}
 
       </div>
+
+      )}
 
     </div>
 

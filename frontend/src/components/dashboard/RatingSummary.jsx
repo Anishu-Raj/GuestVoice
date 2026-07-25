@@ -1,14 +1,17 @@
 import { Star } from "lucide-react";
 
-function RatingSummary() {
+function RatingSummary({ distribution }) {
 
-  const ratings = [
-    { star: 5, count: 80 },
-    { star: 4, count: 15 },
-    { star: 3, count: 8 },
-    { star: 2, count: 3 },
-    { star: 1, count: 1 },
+  const demoRatings = [
+    { star: 5, percent: 80 },
+    { star: 4, percent: 15 },
+    { star: 3, percent: 8 },
+    { star: 2, percent: 3 },
+    { star: 1, percent: 1 },
   ];
+
+  const ratings =
+    distribution && distribution.length > 0 ? distribution : demoRatings;
 
   return (
 
@@ -47,7 +50,7 @@ function RatingSummary() {
               <div
                 className="h-3 rounded-full bg-yellow-400"
                 style={{
-                  width: `${item.count}%`,
+                  width: `${item.percent}%`,
                 }}
               ></div>
 
@@ -55,7 +58,7 @@ function RatingSummary() {
 
             <span className="font-semibold">
 
-              {item.count}%
+              {item.percent}%
 
             </span>
 

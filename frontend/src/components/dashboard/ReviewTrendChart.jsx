@@ -8,7 +8,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const data = [
+const demoData = [
   { month: "Jan", reviews: 25 },
   { month: "Feb", reviews: 38 },
   { month: "Mar", reviews: 42 },
@@ -17,7 +17,10 @@ const data = [
   { month: "Jun", reviews: 75 },
 ];
 
-function ReviewTrendChart() {
+function ReviewTrendChart({ trend }) {
+
+  const data = trend && trend.length > 0 ? trend : demoData;
+
   return (
     <div className="bg-white rounded-3xl shadow-lg p-6 mt-8">
 

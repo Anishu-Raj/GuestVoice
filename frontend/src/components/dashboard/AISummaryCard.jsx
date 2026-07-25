@@ -5,7 +5,19 @@ import {
   Lightbulb,
 } from "lucide-react";
 
-function AISummaryCard() {
+function AISummaryCard({ loved, mentioned, recommendation, hasData }) {
+
+  const demoLoved = ["Clean Rooms", "Friendly Staff", "Peaceful Location", "Scenic Mountain View"];
+  const demoMentioned = ["Slow Wi-Fi", "Breakfast Variety", "Parking Space"];
+  const demoRecommendation =
+    "Improve your breakfast menu and upgrade Wi-Fi speed to increase guest satisfaction and improve your overall ratings.";
+
+  const lovedList = hasData ? loved : demoLoved;
+  const mentionedList = hasData ? mentioned : demoMentioned;
+  const recommendationText = hasData
+    ? recommendation || "No specific issues flagged yet — keep up the good work."
+    : demoRecommendation;
+
   return (
     <div className=" bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
@@ -33,7 +45,13 @@ function AISummaryCard() {
 
       </div>
 
-      {/* Content */}
+      {hasData && lovedList.length === 0 && mentionedList.length === 0 ? (
+
+        <p className="text-gray-400 text-center py-10">
+          No reviews yet — this summary fills in once guests start writing reviews.
+        </p>
+
+      ) : (
 
       <div className="grid md:grid-cols-3 gap-6 mt-8">
 
@@ -51,17 +69,19 @@ function AISummaryCard() {
 
           </div>
 
-          <ul className="space-y-3 text-gray-700">
+          {lovedList.length > 0 ? (
 
-            <li>✔ Clean Rooms</li>
+            <ul className="space-y-3 text-gray-700">
+              {lovedList.map((item) => (
+                <li key={item}>✔ {item}</li>
+              ))}
+            </ul>
 
-            <li>✔ Friendly Staff</li>
+          ) : (
 
-            <li>✔ Peaceful Location</li>
+            <p className="text-gray-400 text-sm">Not enough positive reviews yet.</p>
 
-            <li>✔ Scenic Mountain View</li>
-
-          </ul>
+          )}
 
         </div>
 
@@ -79,15 +99,19 @@ function AISummaryCard() {
 
           </div>
 
-          <ul className="space-y-3 text-gray-700">
+          {mentionedList.length > 0 ? (
 
-            <li>❌ Slow Wi-Fi</li>
+            <ul className="space-y-3 text-gray-700">
+              {mentionedList.map((item) => (
+                <li key={item}>❌ {item}</li>
+              ))}
+            </ul>
 
-            <li>❌ Breakfast Variety</li>
+          ) : (
 
-            <li>❌ Parking Space</li>
+            <p className="text-gray-400 text-sm">No recurring complaints yet.</p>
 
-          </ul>
+          )}
 
         </div>
 
@@ -106,17 +130,14 @@ function AISummaryCard() {
           </div>
 
           <p className="leading-7 text-gray-700">
-
-            Improve your breakfast menu and
-            upgrade Wi-Fi speed to increase guest
-            satisfaction and improve your overall
-            ratings.
-
+            {recommendationText}
           </p>
 
         </div>
 
       </div>
+
+      )}
 
     </div>
   );
