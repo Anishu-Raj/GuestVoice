@@ -127,6 +127,14 @@ export function AuthProvider({ children }) {
 
   };
 
+  // Call this after any endpoint that returns an updated user object
+  // (e.g. completing/editing profile), so the rest of the app — like
+  // AuthRedirect checking isProfileCompleted — sees fresh data instead
+  // of what was loaded at login time.
+  const updateDbUser = (updatedUser) => {
+    setDbUser((prev) => ({ ...prev, ...updatedUser }));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -137,6 +145,7 @@ export function AuthProvider({ children }) {
         loginWithEmail,
         registerWithEmail,
         logout,
+        updateDbUser,
         isLoggedIn: !!dbUser,
       }}
     >

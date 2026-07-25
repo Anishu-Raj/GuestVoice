@@ -1,36 +1,62 @@
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
-  Upload,
+  Link2,
   BarChart3,
   Home,
   Sparkles,
 } from "lucide-react";
 
-function QuickActions() {
+function QuickActions({ homestayId }) {
+
+  const navigate = useNavigate();
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const copyReviewLink = () => {
+
+    if (!homestayId) {
+      toast.error("Homestay not set up yet");
+      return;
+    }
+
+    const link = `${window.location.origin}/homestay/${homestayId}`;
+
+    navigator.clipboard.writeText(link);
+    toast.success("Review link copied — share it with your guests");
+
+  };
 
   const actions = [
 
     {
-      title: "Upload Reviews",
-      icon: Upload,
+      title: "Share Review Link",
+      icon: Link2,
       color: "from-pink-500 to-rose-500",
+      onClick: copyReviewLink,
     },
 
     {
       title: "View Analytics",
       icon: BarChart3,
       color: "from-blue-500 to-cyan-500",
+      onClick: () => scrollTo("analytics-section"),
     },
 
     {
       title: "Edit Homestay",
       icon: Home,
       color: "from-green-500 to-emerald-500",
+      onClick: () => navigate("/complete-profile"),
     },
 
     {
-      title: "Generate AI Report",
+      title: "View AI Summary",
       icon: Sparkles,
       color: "from-purple-500 to-fuchsia-500",
+      onClick: () => scrollTo("ai-summary-section"),
     },
 
   ];
@@ -55,7 +81,8 @@ function QuickActions() {
 
             <button
               key={action.title}
-              className={`bg-gradient-to-r ${action.color} rounded-3xl p-6 text-white shadow-lg hover:scale-105 transition duration-300`}
+              onClick={action.onClick}
+              className={`bg-gradient-to-r ${action.color} rounded-3xl p-6 text-white shadow-lg hover:scale-105 transition duration-300 text-left`}
             >
 
               <Icon size={34} />

@@ -1,8 +1,9 @@
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 import {
   Sparkles,
@@ -15,9 +16,11 @@ import {
 } from "lucide-react";
 function CompleteProfile() {
 
-  const { dbUser } = useAuth();
+  const { dbUser, updateDbUser } = useAuth();
 
   const navigate = useNavigate();
+
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
   role: "owner",
@@ -30,6 +33,51 @@ function CompleteProfile() {
   businessGoal: "",
   description: "",
 });
+
+  // If they already have a homestay (e.g. clicked "Edit Homestay" from the
+  // dashboard), pre-fill the form instead of making them start from scratch.
+  useEffect(() => {
+
+    const prefill = async () => {
+
+      if (!dbUser) return;
+
+      setFormData((prev) => ({
+        ...prev,
+        role: dbUser.role || "owner",
+        phone: dbUser.phone || "",
+      }));
+
+      if (dbUser.homestayId) {
+
+        try {
+
+          const { data } = await API.get(`/homestays/${dbUser.homestayId}`);
+
+          setFormData((prev) => ({
+            ...prev,
+            homestayName: data.name || "",
+            city: data.city || "",
+            state: data.state || "",
+            propertyType: data.propertyType || "",
+            rooms: data.rooms || 1,
+            businessGoal: data.businessGoal || "",
+            description: data.description || "",
+          }));
+
+        } catch (err) {
+
+          console.log(err);
+
+        }
+
+      }
+
+    };
+
+    prefill();
+
+  }, [dbUser]);
 
   const handleChange = (e) => {
 
@@ -75,22 +123,34 @@ const goals = [
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+    setSubmitting(true);
 
     try {
 
-      await axios.put(
-        `http://localhost:5000/api/auth/profile/${dbUser._id}`,
+      const { data } = await API.put(
+        `/auth/profile/${dbUser._id}`,
         {
           ...formData,
           isProfileCompleted: true,
         }
       );
 
-      navigate("/dashboard");
+      updateDbUser(data.user);
+
+      toast.success("Profile saved");
+
+      navigate("/redirect");
 
     } catch (error) {
 
       console.log(error);
+      toast.error(
+        error.response?.data?.message || "Couldn't save your profile. Try again."
+      );
+
+    } finally {
+
+      setSubmitting(false);
 
     }
 
@@ -808,11 +868,13 @@ As a Guest, you can:
 
 type="submit"
 
-className="w-full rounded-3xl py-5 text-xl font-bold text-white bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 shadow-xl hover:scale-[1.02] transition-all duration-300"
+disabled={submitting}
+
+className="w-full rounded-3xl py-5 text-xl font-bold text-white bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:hover:scale-100"
 
 >
 
-🚀 Complete Setup
+{submitting ? "Saving..." : "Complete Setup"}
 
 </button>
 
