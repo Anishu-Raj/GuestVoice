@@ -1,8 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --color-pine-950: #0e2018;
+  --color-pine-900: #14291f;
+  --color-pine-800: #1b3327;
+  --color-ember-500: #e8934a;
+  --color-ember-400: #efab6c;
+  --color-mist-100: #f6f3ec;
+  --color-sage-400: #8fae94;
+
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
 body {
   margin: 0;
   padding: 0;
+  font-family: var(--font-sans);
 }
 
 #root {
