@@ -14,11 +14,11 @@ function SearchSection({ onSearch }) {
   };
 
   return (
-    <section className="bg-pink-50 py-16">
+    <section id="homestays" className="bg-mist-100 py-16 scroll-mt-20">
 
-      <div className="max-w-5xl mx-auto text-center">
+      <div className="max-w-5xl mx-auto text-center px-6">
 
-        <h2 className="text-4xl font-bold text-pink-700">
+        <h2 className="text-3xl sm:text-4xl font-bold text-pine-950">
 
           Search Your Homestay
 
@@ -35,7 +35,7 @@ function SearchSection({ onSearch }) {
           className="mt-10 flex justify-center gap-4 flex-wrap"
         >
 
-          <div className="relative">
+          <div className="relative w-full sm:w-[350px]">
 
             <Search
               className="absolute left-4 top-4 text-gray-400"
@@ -47,14 +47,14 @@ function SearchSection({ onSearch }) {
               placeholder="Enter Homestay Name..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              className="w-[350px] pl-12 pr-5 py-4 rounded-xl border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full pl-12 pr-5 py-4 rounded-xl border border-pine-800/20 focus:outline-none focus:ring-2 focus:ring-ember-400"
             />
 
           </div>
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 rounded-xl hover:scale-105 transition"
+            className="bg-pine-950 text-white px-8 py-4 sm:py-0 rounded-xl hover:bg-pine-800 transition"
           >
 
             Search

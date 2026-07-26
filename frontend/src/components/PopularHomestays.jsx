@@ -107,7 +107,7 @@ function PopularHomestays({ keyword }) {
 
             <div
               key={item._id}
-              className="bg-pink-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition duration-300 border border-pink-100"
+              className="bg-mist-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition duration-300 border border-pine-950/5"
             >
 
               <div className="flex justify-between items-center">
@@ -142,7 +142,7 @@ function PopularHomestays({ keyword }) {
 
               <button
                 onClick={() => navigate(`/homestay/${item._id}`)}
-                className="mt-8 w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-xl hover:scale-105 transition"
+                className="mt-8 w-full bg-pine-950 text-white py-3 rounded-xl hover:bg-pine-800 transition"
               >
                 View Details
               </button>
