@@ -22,7 +22,7 @@ function Navbar() {
 
         <Link to="/" className="flex items-center gap-3">
 
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-sky-500 to-blue-700 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-ember-500 to-pine-800 flex items-center justify-center text-white font-bold text-lg shadow-lg">
 
             G
 
@@ -52,25 +52,21 @@ function Navbar() {
 
           <Link
             to="/"
-            className="hover:text-sky-500 transition"
+            className="hover:text-ember-500 transition"
           >
             Home
           </Link>
 
-          {isLoggedIn && (
-
-            <Link
-              to="/redirect"
-              className="hover:text-sky-500 transition"
-            >
-              Dashboard
-            </Link>
-
-          )}
+          <Link
+            to={isLoggedIn ? "/redirect" : "/dashboard"}
+            className="hover:text-ember-500 transition"
+          >
+            Dashboard
+          </Link>
 
           <Link
             to="/about"
-            className="hover:text-sky-500 transition"
+            className="hover:text-ember-500 transition"
           >
             About
           </Link>
@@ -110,7 +106,7 @@ function Navbar() {
 
               <Link to="/login">
 
-                <button className="bg-sky-500 hover:bg-sky-600 transition px-6 py-3 rounded-xl text-white font-semibold shadow-md">
+                <button className="bg-pine-950 hover:bg-pine-800 transition px-6 py-3 rounded-xl text-white font-semibold shadow-md">
 
                   Login
 

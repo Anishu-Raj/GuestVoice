@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Navbar";
 import ReviewStats from "../components/ReviewStats";
 import ReviewForm from "../components/ReviewForm";
 import ReviewList from "../components/ReviewList";
@@ -161,9 +162,11 @@ function HomestayDetails() {
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
 
-      <div className="max-w-6xl mx-auto px-6">
+      <Navbar />
+
+      <div className="max-w-6xl mx-auto px-6 py-12">
 
         <div className="bg-white rounded-3xl shadow-xl p-10">
 
@@ -244,13 +247,37 @@ function HomestayDetails() {
 
         </div>
 
-        <ReviewForm
-          formData={formData}
-          setFormData={setFormData}
-          submitReview={submitReview}
-          editingId={editingId}
-          submitting={submitting}
-        />
+        {isLoggedIn ? (
+
+          <ReviewForm
+            formData={formData}
+            setFormData={setFormData}
+            submitReview={submitReview}
+            editingId={editingId}
+            submitting={submitting}
+          />
+
+        ) : (
+
+          <div className="mt-14 bg-white rounded-3xl shadow-xl p-10 text-center">
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              Want to leave a review?
+            </h2>
+
+            <p className="text-gray-500 mt-3">
+              Login to share your experience at {homestay.name}.
+            </p>
+
+            <Link to="/login">
+              <button className="mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-10 py-4 rounded-xl hover:scale-105 transition">
+                Login to write a review
+              </button>
+            </Link>
+
+          </div>
+
+        )}
 
       </div>
 

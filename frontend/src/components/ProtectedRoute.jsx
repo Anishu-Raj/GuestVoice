@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 function ProtectedRoute({ children }) {
@@ -14,6 +15,7 @@ function ProtectedRoute({ children }) {
   }
 
   if (!dbUser) {
+    toast("Please login to continue");
     return <Navigate to="/login" replace />;
   }
 
