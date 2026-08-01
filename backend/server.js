@@ -27,7 +27,11 @@ app.use(express.json());
 
 // Database Connection
 connectDB();
-app.use("/api/auth", authLimiter);
+// Rate limiting only applies to login/register — not /me, /google, etc,
+// which fire on every page load and would otherwise get falsely blocked.
+app.use("/api/auth/login", authLimiter);
+app.use("/api/auth/register", authLimiter);
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/reviews", reviewRoutes);
