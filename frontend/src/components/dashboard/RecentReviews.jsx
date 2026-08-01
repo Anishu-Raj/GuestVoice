@@ -84,7 +84,7 @@ function RecentReviews({ reviews: reviewsProp }) {
 
         <div>
 
-          <h2 className="text-2xl font-bold text-slate-800">
+          <h2 className="font-display text-2xl font-semibold text-rose-950">
             Recent Reviews
           </h2>
 
@@ -149,8 +149,8 @@ function RecentReviews({ reviews: reviewsProp }) {
 
                   {reply ? (
 
-                    <div className="bg-sky-50 border border-sky-100 rounded-xl p-4">
-                      <p className="text-xs font-semibold text-sky-600 mb-1">
+                    <div className="bg-gold-400/10 border border-gold-400/20 rounded-xl p-4">
+                      <p className="text-xs font-semibold text-gold-600 mb-1">
                         Your AI-suggested reply
                       </p>
                       <p className="text-gray-700 text-sm leading-6">
@@ -163,12 +163,12 @@ function RecentReviews({ reviews: reviewsProp }) {
                     <button
                       onClick={() => generateReply(review.id)}
                       disabled={isGenerating}
-                      className="flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-sky-700 disabled:opacity-60"
+                      className="flex items-center gap-2 text-sm font-medium text-gold-600 hover:text-gold-500 disabled:opacity-60"
                     >
 
                       {isGenerating ? (
                         <>
-                          <span className="w-3.5 h-3.5 border-2 border-sky-300 border-t-sky-600 rounded-full animate-spin" />
+                          <span className="w-3.5 h-3.5 border-2 border-gold-300 border-t-gold-500 rounded-full animate-spin" />
                           Generating reply...
                         </>
                       ) : (

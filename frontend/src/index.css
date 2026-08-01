@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
+/*
+  GuestVoice brand tokens.
+  Warm, boutique-hospitality palette: deep wine (rose-950, built into
+  Tailwind) for ink/CTAs, a soft blush for surfaces, and a brass/gold
+  accent for rating & AI moments.
+  (This file previously defined an unused pine/ember/sage set that never
+  matched what the components actually used — that mismatch is why
+  bg-blush-100 / text-gold-400 etc. were silently rendering as nothing.)
+*/
 @theme {
-  --color-pine-950: #0e2018;
-  --color-pine-900: #14291f;
-  --color-pine-800: #1b3327;
-  --color-ember-500: #e8934a;
-  --color-ember-400: #efab6c;
-  --color-mist-100: #f6f3ec;
-  --color-sage-400: #8fae94;
+  --color-blush-50: #fdf7f5;
+  --color-blush-100: #f7e9e4;
+  --color-blush-200: #f0d9d1;
+
+  --color-gold-300: #e8c987;
+  --color-gold-400: #d4a24c;
+  --color-gold-500: #b9822f;
+  --color-gold-600: #96691f;
+
+  --color-ink-900: #2b1512;
 
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 }
 
@@ -17,8 +30,16 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
+  background-color: var(--color-blush-50);
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Subtle dot-grid texture used behind data-heavy screens (dashboard) so
+   they get depth without competing with the numbers on top of it. */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(76, 5, 25, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
 }

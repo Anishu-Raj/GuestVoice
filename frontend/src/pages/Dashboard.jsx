@@ -63,8 +63,8 @@ function Dashboard() {
   if (loading || !dbUser) {
 
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <span className="w-8 h-8 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin" />
+      <div className="min-h-screen flex justify-center items-center bg-blush-50">
+        <span className="w-8 h-8 border-4 border-rose-200 border-t-rose-600 rounded-full animate-spin" />
       </div>
     );
 
@@ -72,11 +72,11 @@ function Dashboard() {
 
   return (
 
-    <div className="min-h-screen bg-pink-50 flex">
+    <div className="min-h-screen bg-blush-100 flex">
 
-      <DashboardSidebar />
+      <DashboardSidebar homestayName={dashboardData?.homestay?.name} />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-dot-grid">
 
         <div className="p-8">
 
@@ -85,7 +85,7 @@ function Dashboard() {
           {dashboardLoading ? (
 
             <div className="flex flex-col items-center justify-center py-24 gap-4">
-              <span className="w-10 h-10 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin" />
+              <span className="w-10 h-10 border-4 border-rose-200 border-t-rose-600 rounded-full animate-spin" />
               <p className="text-gray-400">Loading your dashboard...</p>
             </div>
 
@@ -95,7 +95,7 @@ function Dashboard() {
               <p className="text-red-500">{dashboardError}</p>
               <button
                 onClick={fetchDashboard}
-                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl transition"
+                className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl transition"
               >
                 Retry
               </button>
@@ -136,7 +136,9 @@ function Dashboard() {
 
               </div>
 
-              <RecentReviews reviews={dashboardData?.recentReviews} />
+              <div id="recent-reviews-section" className="scroll-mt-8">
+                <RecentReviews reviews={dashboardData?.recentReviews} />
+              </div>
 
               <TopKeywords keywords={dashboardData?.topKeywords} />
 

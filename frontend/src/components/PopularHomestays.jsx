@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { Home } from "lucide-react";
+import { photoForHomestay } from "../utils/homestayPhotos";
 
 function PopularHomestays({ keyword }) {
   const [homestays, setHomestays] = useState([]);
@@ -107,20 +108,30 @@ function PopularHomestays({ keyword }) {
 
             <div
               key={item._id}
-              className="bg-mist-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition duration-300 border border-pine-950/5"
+              className="bg-blush-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 border border-rose-950/5"
             >
 
-              <div className="flex justify-between items-center">
+              <div className="relative h-40">
 
-                <h2 className="text-2xl font-bold text-slate-800">
-                  {item.name}
-                </h2>
+                <img
+                  src={photoForHomestay(item._id)}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
 
-                <span className="text-2xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-rose-950/60 to-transparent" />
+
+                <span className="absolute bottom-3 right-4 text-2xl">
                   🏡
                 </span>
 
               </div>
+
+              <div className="p-8">
+
+              <h2 className="text-2xl font-bold text-slate-800">
+                {item.name}
+              </h2>
 
               <p className="mt-4 text-gray-600">
                 📍 {item.city}{item.state ? `, ${item.state}` : ""}
@@ -142,10 +153,12 @@ function PopularHomestays({ keyword }) {
 
               <button
                 onClick={() => navigate(`/homestay/${item._id}`)}
-                className="mt-8 w-full bg-pine-950 text-white py-3 rounded-xl hover:bg-pine-800 transition"
+                className="mt-8 w-full bg-rose-950 text-white py-3 rounded-xl hover:bg-rose-700 transition"
               >
                 View Details
               </button>
+
+              </div>
 
             </div>
 

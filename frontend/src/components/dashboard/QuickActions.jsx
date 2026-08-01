@@ -34,28 +34,29 @@ function QuickActions({ homestayId }) {
     {
       title: "Share Review Link",
       icon: Link2,
-      color: "from-pink-500 to-rose-500",
+      color: "from-rose-600 to-rose-700",
       onClick: copyReviewLink,
     },
 
     {
       title: "View Analytics",
       icon: BarChart3,
-      color: "from-blue-500 to-cyan-500",
+      color: "from-rose-800 to-rose-950",
       onClick: () => scrollTo("analytics-section"),
     },
 
     {
       title: "Edit Homestay",
       icon: Home,
-      color: "from-green-500 to-emerald-500",
+      color: "from-[#6b1530] to-rose-950",
       onClick: () => navigate("/complete-profile"),
     },
 
     {
       title: "View AI Summary",
       icon: Sparkles,
-      color: "from-purple-500 to-fuchsia-500",
+      color: "from-gold-500 to-gold-400",
+      dark: true,
       onClick: () => scrollTo("ai-summary-section"),
     },
 
@@ -65,7 +66,7 @@ function QuickActions({ homestayId }) {
 
     <div className="mt-8">
 
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">
+      <h2 className="font-display text-2xl font-semibold text-rose-950 mb-6">
 
         Quick Actions
 
@@ -82,7 +83,9 @@ function QuickActions({ homestayId }) {
             <button
               key={action.title}
               onClick={action.onClick}
-              className={`bg-gradient-to-r ${action.color} rounded-3xl p-6 text-white shadow-lg hover:scale-105 transition duration-300 text-left`}
+              className={`bg-gradient-to-r ${action.color} rounded-3xl p-6 ${
+                action.dark ? "text-rose-950" : "text-white"
+              } shadow-lg hover:scale-105 transition duration-300 text-left`}
             >
 
               <Icon size={34} />

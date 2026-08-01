@@ -18,11 +18,6 @@ function Login() {
     password: "",
   });
 
-  // Once login succeeds (either Google or email/password) and we get the
-  // user back from our backend, send them onward. AuthRedirect (at /redirect)
-  // already knows how to route by role (owner -> dashboard, guest ->
-  // guest-dashboard, admin -> admin-dashboard) and by whether their profile
-  // is complete yet.
   useEffect(() => {
 
     if (!loading && dbUser) {
@@ -94,87 +89,114 @@ function Login() {
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-purple-100 flex items-center justify-center px-5 py-16">
+    <div className="min-h-screen flex">
 
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10">
+      {/* Left — photo panel, hidden on mobile */}
+      <div className="hidden lg:block lg:w-1/2 relative">
 
-        <div className="text-center">
+        <img
+          src="https://picsum.photos/seed/guestvoice-login/900/1200"
+          alt=""
+          className="w-full h-full object-cover"
+        />
 
-          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-sky-500 to-blue-700 flex items-center justify-center text-white text-3xl font-bold mx-auto">
-            G
+        <div className="absolute inset-0 bg-gradient-to-t from-rose-950/90 via-rose-950/30 to-rose-950/10" />
+
+        <div className="absolute bottom-14 left-12 right-12">
+          <p className="text-gold-400 uppercase tracking-[3px] text-sm font-mono">
+            GuestVoice
+          </p>
+          <h2 className="text-white text-3xl font-bold mt-3 leading-snug">
+            Because Every Review Matters.
+          </h2>
+        </div>
+
+      </div>
+
+      {/* Right — form panel */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-5 py-16 bg-blush-100">
+
+        <div className="w-full max-w-md">
+
+          <div className="text-center">
+
+            <div className="w-20 h-20 rounded-full bg-rose-600 flex items-center justify-center text-white text-3xl font-bold mx-auto">
+              G
+            </div>
+
+            <h1 className="text-3xl font-bold mt-6 text-rose-950">
+              Welcome back
+            </h1>
+
+            <p className="text-gray-500 mt-3">
+              AI Powered Hospitality Intelligence
+            </p>
+
           </div>
 
-          <h1 className="text-3xl font-bold mt-6">
-            Welcome to GuestVoice
-          </h1>
+          <form onSubmit={handleEmailLogin} className="space-y-4 mt-8">
 
-          <p className="text-gray-500 mt-3">
-            AI Powered Hospitality Intelligence
-          </p>
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full border border-rose-950/10 bg-white p-4 rounded-xl focus:outline-none focus:border-rose-500"
+              required
+            />
 
-        </div>
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full border border-rose-950/10 bg-white p-4 rounded-xl focus:outline-none focus:border-rose-500"
+              required
+            />
 
-        <form onSubmit={handleEmailLogin} className="space-y-4 mt-8">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full bg-rose-600 hover:bg-rose-700 transition text-white py-4 rounded-xl font-semibold disabled:opacity-60"
+            >
+              {submitting ? "Logging in..." : "Login"}
+            </button>
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:border-sky-500"
-            required
-          />
+          </form>
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:border-sky-500"
-            required
-          />
+          <div className="flex items-center gap-4 mt-6">
+            <div className="flex-1 h-px bg-rose-950/10" />
+            <span className="text-gray-400 text-sm">or</span>
+            <div className="flex-1 h-px bg-rose-950/10" />
+          </div>
 
           <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-sky-500 hover:bg-sky-600 transition text-white py-4 rounded-xl font-semibold disabled:opacity-60"
+            onClick={handleGoogleLogin}
+            disabled={signingIn}
+            className="mt-6 w-full flex items-center justify-center gap-4 bg-white border-2 border-rose-950/10 rounded-xl py-4 hover:border-rose-400 hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {submitting ? "Logging in..." : "Login"}
+            <FcGoogle size={24} />
+            <span className="font-semibold text-rose-950">
+              {signingIn ? "Signing in..." : "Continue with Google"}
+            </span>
           </button>
 
-        </form>
+          {error && (
+            <p className="text-center text-sm text-red-500 mt-4">
+              {error}
+            </p>
+          )}
 
-        <div className="flex items-center gap-4 mt-6">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-gray-400 text-sm">or</span>
-          <div className="flex-1 h-px bg-gray-200" />
-        </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          disabled={signingIn}
-          className="mt-6 w-full flex items-center justify-center gap-4 bg-white border-2 border-gray-200 rounded-xl py-4 hover:border-blue-500 hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          <FcGoogle size={24} />
-          <span className="font-semibold">
-            {signingIn ? "Signing in..." : "Continue with Google"}
-          </span>
-        </button>
-
-        {error && (
-          <p className="text-center text-sm text-red-500 mt-4">
-            {error}
+          <p className="text-center text-sm text-gray-400 mt-8">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-rose-600 font-medium">
+              Register
+            </Link>
           </p>
-        )}
 
-        <p className="text-center text-sm text-gray-400 mt-8">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-sky-500 font-medium">
-            Register
-          </Link>
-        </p>
+        </div>
 
       </div>
 

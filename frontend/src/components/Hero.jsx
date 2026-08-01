@@ -3,12 +3,20 @@ import { Star, TrendingUp, Sparkles, Building2 } from "lucide-react";
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-pine-950">
+    <section className="relative overflow-hidden">
 
-      {/* Sunrise glow behind the ridgeline */}
-      <div className="absolute left-1/2 top-1/3 -translate-x-1/2 w-[600px] h-[600px] bg-ember-500 rounded-full blur-[160px] opacity-20 pointer-events-none" />
+      {/* Background photo */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1587293005014-ecd16293d120?w=1600&q=80&auto=format&fit=crop"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-rose-950/95 via-rose-950/80 to-rose-700/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-rose-950/70 via-transparent to-transparent" />
+      </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-56 sm:pb-64 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 py-24 sm:py-28 grid lg:grid-cols-2 gap-16 items-center">
 
         {/* LEFT */}
         <motion.div
@@ -16,32 +24,32 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <p className="uppercase tracking-[3px] text-ember-400 font-mono text-sm">
+          <p className="uppercase tracking-[3px] text-gold-400 font-mono text-sm">
             AI Hospitality Intelligence
           </p>
 
-          <h1 className="text-5xl sm:text-6xl font-bold text-mist-100 mt-5 leading-tight">
+          <h1 className="text-5xl sm:text-6xl font-bold text-white mt-5 leading-tight">
             Because Every Review
             <br />
-            <span className="text-ember-500">Matters.</span>
+            <span className="text-rose-300">Matters.</span>
           </h1>
 
-          <p className="text-pine-100/70 mt-8 text-lg sm:text-xl leading-8 max-w-lg" style={{ color: "#c9d4cc" }}>
+          <p className="text-white/70 mt-8 text-lg sm:text-xl leading-8 max-w-lg">
             GuestVoice reads every guest review for you — sentiment, recurring
-            topics, and what to fix next — so homestay owners across the
-            hills spend less time reading feedback and more time acting on it.
+            topics, and what to fix next — so homestay owners spend less
+            time reading feedback and more time acting on it.
           </p>
 
           <div className="mt-10 flex gap-4 flex-wrap">
 
             <a href="#homestays">
-              <button className="bg-ember-500 hover:bg-ember-400 transition px-8 py-4 rounded-xl text-pine-950 font-semibold shadow-lg shadow-ember-500/20">
+              <button className="bg-rose-600 hover:bg-rose-700 transition px-8 py-4 rounded-xl text-white font-semibold shadow-lg shadow-rose-950/30">
                 Explore Homestays
               </button>
             </a>
 
             <a href="/register">
-              <button className="border border-mist-100/20 hover:border-ember-400 hover:text-ember-400 transition px-8 py-4 rounded-xl text-mist-100 font-medium">
+              <button className="border border-white/30 hover:border-gold-400 hover:text-gold-400 transition px-8 py-4 rounded-xl text-white font-medium">
                 List Your Homestay
               </button>
             </a>
@@ -53,18 +61,18 @@ function Hero() {
           <div className="grid grid-cols-3 gap-8 mt-16 font-mono">
 
             <div>
-              <h2 className="text-3xl font-bold text-mist-100">120+</h2>
-              <p className="text-pine-100/50 text-sm mt-1" style={{ color: "#8a9990" }}>Homestays</p>
+              <h2 className="text-3xl font-bold text-white">120+</h2>
+              <p className="text-white/50 text-sm mt-1">Homestays</p>
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-mist-100">25K+</h2>
-              <p className="text-sm mt-1" style={{ color: "#8a9990" }}>Reviews</p>
+              <h2 className="text-3xl font-bold text-white">25K+</h2>
+              <p className="text-white/50 text-sm mt-1">Reviews</p>
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-mist-100">95%</h2>
-              <p className="text-sm mt-1" style={{ color: "#8a9990" }}>Satisfaction</p>
+              <h2 className="text-3xl font-bold text-white">95%</h2>
+              <p className="text-white/50 text-sm mt-1">Satisfaction</p>
             </div>
 
           </div>
@@ -78,37 +86,37 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
         >
-          <div className="bg-pine-900/60 backdrop-blur border border-mist-100/10 rounded-3xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-8">
 
             <div className="flex items-center gap-2">
-              <Sparkles className="text-ember-500" size={18} />
-              <p className="text-mist-100 font-semibold">Live Review Intelligence</p>
+              <Sparkles className="text-gold-400" size={18} />
+              <p className="text-white font-semibold">Live Review Intelligence</p>
             </div>
 
             <div className="mt-8 space-y-4 font-mono">
 
-              <div className="flex justify-between items-center border-b border-mist-100/10 pb-4">
+              <div className="flex justify-between items-center border-b border-white/15 pb-4">
                 <div>
-                  <p className="text-xs" style={{ color: "#8a9990" }}>OVERALL RATING</p>
-                  <h3 className="text-mist-100 text-2xl font-bold mt-1">4.8</h3>
+                  <p className="text-xs text-white/50">OVERALL RATING</p>
+                  <h3 className="text-white text-2xl font-bold mt-1">4.8</h3>
                 </div>
-                <Star className="text-ember-500" size={28} />
+                <Star className="text-gold-400" size={28} />
               </div>
 
-              <div className="flex justify-between items-center border-b border-mist-100/10 pb-4">
+              <div className="flex justify-between items-center border-b border-white/15 pb-4">
                 <div>
-                  <p className="text-xs" style={{ color: "#8a9990" }}>POSITIVE SENTIMENT</p>
-                  <h3 className="text-mist-100 text-2xl font-bold mt-1">92%</h3>
+                  <p className="text-xs text-white/50">POSITIVE SENTIMENT</p>
+                  <h3 className="text-white text-2xl font-bold mt-1">92%</h3>
                 </div>
-                <TrendingUp className="text-sage-400" size={28} />
+                <TrendingUp className="text-rose-300" size={28} />
               </div>
 
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-xs" style={{ color: "#8a9990" }}>PARTNER HOMESTAYS</p>
-                  <h3 className="text-mist-100 text-2xl font-bold mt-1">35</h3>
+                  <p className="text-xs text-white/50">PARTNER HOMESTAYS</p>
+                  <h3 className="text-white text-2xl font-bold mt-1">35</h3>
                 </div>
-                <Building2 className="text-ember-400" size={28} />
+                <Building2 className="text-gold-400" size={28} />
               </div>
 
             </div>
@@ -117,29 +125,6 @@ function Hero() {
         </motion.div>
 
       </div>
-
-      {/* Signature: layered mountain ridge silhouette */}
-      <svg
-        className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 260"
-        preserveAspectRatio="none"
-        style={{ height: "220px" }}
-      >
-        <path
-          d="M0,180 L120,120 L260,170 L400,90 L560,160 L700,70 L860,150 L1020,100 L1180,170 L1320,110 L1440,150 L1440,260 L0,260 Z"
-          fill="#1b3327"
-          opacity="0.55"
-        />
-        <path
-          d="M0,220 L160,150 L320,200 L480,130 L640,190 L800,120 L960,195 L1120,140 L1280,200 L1440,160 L1440,260 L0,260 Z"
-          fill="#14291f"
-          opacity="0.8"
-        />
-        <path
-          d="M0,260 L140,205 L300,245 L460,190 L620,240 L780,195 L940,245 L1100,205 L1260,250 L1440,220 L1440,260 L0,260 Z"
-          fill="#0e2018"
-        />
-      </svg>
 
     </section>
   );

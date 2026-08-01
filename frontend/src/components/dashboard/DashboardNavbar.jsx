@@ -20,11 +20,11 @@ function DashboardNavbar() {
 
       <div>
 
-        <h1 className="text-3xl font-bold text-slate-800">
+        <h1 className="font-display text-3xl font-semibold text-rose-950">
 
           Welcome back,
 
-          <span className="text-pink-600">
+          <span className="text-rose-700">
 
             {" "}
 
@@ -48,9 +48,9 @@ function DashboardNavbar() {
 
       <div className="flex items-center gap-5">
 
-        <button className="relative bg-pink-50 p-3 rounded-2xl hover:bg-pink-100 transition">
+        <button className="relative bg-blush-100 p-3 rounded-2xl hover:bg-rose-600/10 transition">
 
-          <Bell className="text-pink-600" />
+          <Bell className="text-rose-700" />
 
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
 

@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import ReviewStats from "../components/ReviewStats";
 import ReviewForm from "../components/ReviewForm";
 import ReviewList from "../components/ReviewList";
+import { photoForHomestay } from "../utils/homestayPhotos";
 
 function HomestayDetails() {
 
@@ -162,9 +163,30 @@ function HomestayDetails() {
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
+    <div className="min-h-screen bg-blush-100">
 
       <Navbar />
+
+      <div className="relative h-64 sm:h-80">
+
+        <img
+          src={photoForHomestay(homestay._id)}
+          alt={homestay.name}
+          className="w-full h-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-rose-950/80 via-rose-950/20 to-transparent" />
+
+        <div className="absolute bottom-8 left-6 right-6 max-w-6xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white">
+            {homestay.name}
+          </h1>
+          <p className="text-white/80 mt-2">
+            {homestay.city}{homestay.state ? `, ${homestay.state}` : ""}
+          </p>
+        </div>
+
+      </div>
 
       <div className="max-w-6xl mx-auto px-6 py-12">
 
@@ -174,13 +196,11 @@ function HomestayDetails() {
 
             <div>
 
-              <h1 className="text-5xl font-bold text-gray-800">
-                {homestay.name}
-              </h1>
-
-              <p className="text-gray-500 mt-3">
-                {homestay.city}{homestay.state ? `, ${homestay.state}` : ""}
-              </p>
+              {homestay.propertyType && (
+                <span className="bg-rose-100 text-rose-700 px-4 py-2 rounded-full">
+                  {homestay.propertyType}
+                </span>
+              )}
 
             </div>
 
@@ -197,14 +217,6 @@ function HomestayDetails() {
             </div>
 
           </div>
-
-          {homestay.propertyType && (
-            <div className="mt-8 flex gap-4">
-              <span className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full">
-                {homestay.propertyType}
-              </span>
-            </div>
-          )}
 
           <p className="mt-8 text-gray-700 leading-8">
             {homestay.description}
@@ -229,7 +241,7 @@ function HomestayDetails() {
                 onClick={() => setFilter(item)}
                 className={`px-5 py-2 rounded-full transition font-medium ${
                   filter === item
-                    ? "bg-pink-500 text-white"
+                    ? "bg-rose-600 text-white"
                     : "bg-white border"
                 }`}
               >
@@ -270,7 +282,7 @@ function HomestayDetails() {
             </p>
 
             <Link to="/login">
-              <button className="mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-10 py-4 rounded-xl hover:scale-105 transition">
+              <button className="mt-6 bg-rose-600 hover:bg-rose-700 text-white px-10 py-4 rounded-xl transition">
                 Login to write a review
               </button>
             </Link>

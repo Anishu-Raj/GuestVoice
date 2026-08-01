@@ -24,24 +24,24 @@ function StatsCards({ data }) {
       title: "Average Rating",
       value: averageRating,
       icon: Star,
-      color: "text-yellow-500",
-      bg: "bg-yellow-50",
+      color: "text-gold-500",
+      bg: "bg-gold-400/15",
     },
 
     {
       title: "Total Reviews",
       value: totalReviews,
       icon: MessageSquare,
-      color: "text-blue-500",
-      bg: "bg-blue-50",
+      color: "text-rose-700",
+      bg: "bg-rose-100",
     },
 
     {
       title: "Positive Reviews",
       value: positiveCount,
       icon: Smile,
-      color: "text-green-500",
-      bg: "bg-green-50",
+      color: "text-emerald-600",
+      bg: "bg-emerald-50",
     },
 
     {
@@ -66,7 +66,7 @@ function StatsCards({ data }) {
 
           <div
             key={index}
-            className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition"
+            className="bg-white rounded-3xl shadow-sm border border-rose-950/5 p-6 hover:shadow-lg hover:-translate-y-0.5 transition duration-300"
           >
 
             <div className="flex items-center justify-between">
@@ -79,7 +79,7 @@ function StatsCards({ data }) {
 
                 </p>
 
-                <h2 className="text-4xl font-bold mt-3 text-slate-800">
+                <h2 className="font-display text-4xl font-semibold mt-3 text-rose-950">
 
                   {item.value}
 

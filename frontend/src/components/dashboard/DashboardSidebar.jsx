@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -8,15 +10,28 @@ import {
   Home,
 } from "lucide-react";
 
-function DashboardSidebar() {
+function DashboardSidebar({ homestayName }) {
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <aside className="w-72 min-h-screen bg-white border-r border-pink-100 shadow-sm flex flex-col">
+    <aside className="w-72 min-h-screen bg-blush-100 border-r border-rose-950/10 shadow-sm flex flex-col">
 
       {/* Logo */}
 
-      <div className="p-8 border-b border-pink-100">
+      <div className="p-8 border-b border-rose-950/10">
 
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-600 to-rose-700 bg-clip-text text-transparent">
           GuestVoice
         </h1>
 
@@ -39,21 +54,25 @@ function DashboardSidebar() {
         <SidebarItem
           icon={<MessageSquare size={20} />}
           title="Reviews"
+          onClick={() => scrollTo("recent-reviews-section")}
         />
 
         <SidebarItem
           icon={<Sparkles size={20} />}
           title="AI Insights"
+          onClick={() => scrollTo("ai-summary-section")}
         />
 
         <SidebarItem
           icon={<BarChart3 size={20} />}
           title="Analytics"
+          onClick={() => scrollTo("analytics-section")}
         />
 
         <SidebarItem
           icon={<Settings size={20} />}
           title="Settings"
+          onClick={() => navigate("/complete-profile")}
         />
 
       </nav>
@@ -62,20 +81,20 @@ function DashboardSidebar() {
 
       <div className="px-5">
 
-        <div className="rounded-3xl bg-pink-50 p-5">
+        <div className="rounded-3xl bg-white p-5 border border-rose-950/5">
 
           <div className="flex items-center gap-3">
 
-            <Home className="text-pink-500" />
+            <Home className="text-rose-600" />
 
             <div>
 
-              <h2 className="font-semibold">
-                My Homestay
+              <h2 className="font-semibold text-rose-950">
+                {homestayName || "My Homestay"}
               </h2>
 
               <p className="text-sm text-gray-500">
-                Not Connected
+                {homestayName ? "Connected" : "Not Connected"}
               </p>
 
             </div>
@@ -90,7 +109,10 @@ function DashboardSidebar() {
 
       <div className="p-5">
 
-        <button className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-white font-semibold hover:scale-105 transition">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 rounded-2xl bg-rose-950 py-3 text-white font-semibold hover:bg-rose-700 transition"
+        >
 
           <LogOut size={18} />
 
@@ -104,13 +126,14 @@ function DashboardSidebar() {
   );
 }
 
-function SidebarItem({ icon, title, active }) {
+function SidebarItem({ icon, title, active, onClick }) {
   return (
     <button
+      onClick={onClick}
       className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 ${
         active
-          ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
-          : "hover:bg-pink-50 text-gray-700"
+          ? "bg-rose-950 text-white shadow-lg"
+          : "hover:bg-white text-gray-700"
       }`}
     >
       {icon}

@@ -24,15 +24,15 @@ function TopKeywords({ keywords: keywordsProp }) {
 
       <div className="flex items-center gap-3">
 
-        <div className="bg-blue-100 p-3 rounded-2xl">
+        <div className="bg-rose-100 p-3 rounded-2xl">
 
-          <Tag className="text-blue-600" />
+          <Tag className="text-rose-700" />
 
         </div>
 
         <div>
 
-          <h2 className="text-2xl font-bold text-slate-800">
+          <h2 className="font-display text-2xl font-semibold text-rose-950">
             Top Keywords
           </h2>
 
@@ -52,7 +52,7 @@ function TopKeywords({ keywords: keywordsProp }) {
 
           <div
             key={index}
-            className="flex items-center gap-3 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-100 rounded-full px-5 py-3 hover:shadow-md transition"
+            className="flex items-center gap-3 bg-blush-100 border border-rose-950/10 rounded-full px-5 py-3 hover:shadow-md transition"
           >
 
             <span className="font-medium text-slate-700">
@@ -61,7 +61,7 @@ function TopKeywords({ keywords: keywordsProp }) {
 
             </span>
 
-            <span className="bg-pink-500 text-white text-xs px-2 py-1 rounded-full">
+            <span className="bg-rose-950 text-white text-xs px-2 py-1 rounded-full">
 
               {keyword.count}
 

@@ -24,7 +24,7 @@ function About() {
         <div className="grid sm:grid-cols-3 gap-6 mt-14">
 
           <div className="border border-gray-100 rounded-2xl p-6">
-            <MessageSquare className="text-sky-500 mb-3" size={28} />
+            <MessageSquare className="text-rose-600 mb-3" size={28} />
             <h3 className="font-semibold text-gray-900 mb-1">Collect reviews</h3>
             <p className="text-gray-500 text-sm">
               Guests leave a rating and a review after their stay, from a link
@@ -33,7 +33,7 @@ function About() {
           </div>
 
           <div className="border border-gray-100 rounded-2xl p-6">
-            <Brain className="text-sky-500 mb-3" size={28} />
+            <Brain className="text-rose-600 mb-3" size={28} />
             <h3 className="font-semibold text-gray-900 mb-1">AI reads them</h3>
             <p className="text-gray-500 text-sm">
               Each review is analyzed for sentiment and the specific topics
@@ -42,7 +42,7 @@ function About() {
           </div>
 
           <div className="border border-gray-100 rounded-2xl p-6">
-            <TrendingUp className="text-sky-500 mb-3" size={28} />
+            <TrendingUp className="text-rose-600 mb-3" size={28} />
             <h3 className="font-semibold text-gray-900 mb-1">You take action</h3>
             <p className="text-gray-500 text-sm">
               Your dashboard shows what's working and what needs attention,
