@@ -1,7 +1,9 @@
 import User from "../models/User.js";
 import Homestay from "../models/Homestay.js";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import generateToken from "../utils/generateToken.js";
+import { sendResetPasswordEmail } from "../utils/mailer.js";
 
 // =======================================
 // Register
@@ -343,5 +345,115 @@ export const updateProfile = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
 
   res.json(req.user);
+
+};
+
+// =======================================
+// Forgot Password — request a reset link
+// =======================================
+
+export const forgotPassword = async (req, res) => {
+
+  try {
+
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    // Always respond the same way whether the email exists or not,
+    // so this endpoint can't be used to check which emails are registered.
+    if (!user) {
+      return res.json({
+        success: true,
+        message: "If that email is registered, a reset link has been sent.",
+      });
+    }
+
+    if (!user.password) {
+      return res.status(400).json({
+        success: false,
+        message: "This account uses Google Sign-In. Please continue with Google instead.",
+      });
+    }
+
+    const rawToken = crypto.randomBytes(32).toString("hex");
+
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+
+    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
+
+    await user.save();
+
+    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:5173"}/reset-password/${rawToken}`;
+
+    await sendResetPasswordEmail(user.email, resetLink);
+
+    res.json({
+      success: true,
+      message: "If that email is registered, a reset link has been sent.",
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+
+};
+
+// =======================================
+// Reset Password — set a new password using the token
+// =======================================
+
+export const resetPassword = async (req, res) => {
+
+  try {
+
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "This reset link is invalid or has expired. Please request a new one.",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Password updated. You can now log in with your new password.",
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
 
 };

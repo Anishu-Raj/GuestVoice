@@ -6,6 +6,8 @@ import {
   googleLogin,
   updateProfile,
   getCurrentUser,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/authController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -31,5 +33,10 @@ router.put("/profile/:id", updateProfile);
 // ================= CURRENT LOGGED-IN USER =================
 
 router.get("/me", protect, getCurrentUser);
+
+// ================= FORGOT / RESET PASSWORD =================
+
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
 
 export default router;
