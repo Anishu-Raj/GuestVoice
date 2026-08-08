@@ -156,6 +156,12 @@ function Login() {
               required
             />
 
+            <div className="text-right">
+              <Link to="/forgot-password" className="text-sm text-rose-500 font-medium">
+                Forgot password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={submitting}
